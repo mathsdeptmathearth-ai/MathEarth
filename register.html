@@ -322,112 +322,112 @@
         </div>
     </div>
 
-    <script>
-      function showForm() {
-          const dept = document.getElementById('department').value;
-          const mathForm = document.getElementById('math-form');
-          const otherForm = document.getElementById('other-form');
-          mathForm.classList.add('hidden');
-          otherForm.classList.add('hidden');
+  <script>
+  function showForm() {
+    const dept = document.getElementById('department').value;
+    const mathForm = document.getElementById('math-form');
+    const otherForm = document.getElementById('other-form');
+    mathForm.classList.add('hidden');
+    otherForm.classList.add('hidden');
 
-          if (dept === 'Mathematics') {
-              mathForm.classList.remove('hidden');
-          } else if (dept === 'Other Department') {
-              otherForm.classList.remove('hidden');
-          }
+    if (dept === 'Mathematics') {
+      mathForm.classList.remove('hidden');
+    } else if (dept === 'Other Department') {
+      otherForm.classList.remove('hidden');
+    }
+  }
+
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwFhm7d1TP9_Z1B4vL__8DMf4RrNku0TLZi6d_1e1Md4fcOtXY9PWovhOjwO6vIdNZDMA/exec";
+
+  async function fileToBase64(inputEl) {
+    if (!inputEl || !inputEl.files || inputEl.files.length === 0) return null;
+    const file = inputEl.files[0];
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  document.getElementById('regForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const dept = document.getElementById('department').value;
+    if (!dept) {
+      alert("Please select Department first.");
+      return;
+    }
+
+    try {
+      const payload = {
+        department: dept,
+        name: "",
+        programme: "",
+        semester: "",
+        personal_email: "",
+        contact: "",
+        whatsapp: "",
+        univ_email: "",
+        other_department: "",
+        math_idcardBase64: null,
+        math_paymentBase64: null,
+        math_photoBase64: null,
+        other_photoBase64: null
+      };
+
+      if (dept === "Mathematics") {
+        payload.name           = document.getElementById('math-name').value.trim();
+        payload.programme      = document.getElementById('math-programme').value.trim();
+        payload.semester       = document.getElementById('math-semester').value.trim();
+        payload.personal_email = document.getElementById('math-email').value.trim();
+        payload.contact        = document.getElementById('math-contact').value.trim();
+        payload.whatsapp       = document.getElementById('math-whatsapp').value.trim();
+        payload.univ_email     = document.getElementById('math-univ-email').value.trim();
+
+        payload.math_idcardBase64  = await fileToBase64(document.getElementById('math-idcard'));
+        payload.math_paymentBase64 = await fileToBase64(document.getElementById('math-payment'));
+        payload.math_photoBase64   = await fileToBase64(document.getElementById('math-photo'));
+      } else {
+        payload.name             = document.getElementById('other-name').value.trim();
+        payload.other_department = document.getElementById('other-dept').value.trim();
+        payload.programme        = document.getElementById('other-programme').value.trim();
+        payload.semester         = document.getElementById('other-semester').value.trim();
+        payload.personal_email   = document.getElementById('other-email').value.trim();
+        payload.contact          = document.getElementById('other-contact').value.trim();
+        payload.whatsapp         = document.getElementById('other-whatsapp').value.trim();
+        payload.univ_email       = document.getElementById('other-univ-email').value.trim();
+
+        payload.other_photoBase64 = await fileToBase64(document.getElementById('other-photo'));
       }
 
-      // Yahan apna deployed web app URL daalo
-      const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwFhm7d1TP9_Z1B4vL__8DMf4RrNku0TLZi6d_1e1Md4fcOtXY9PWovhOjwO6vIdNZDMA/exec";
-
-      async function fileToBase64(inputEl) {
-        if (!inputEl || !inputEl.files || inputEl.files.length === 0) return null;
-        const file = inputEl.files[0];
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result); // data:<mime>;base64,...
-          reader.onerror = reject;
-          reader.readAsDataURL(file);
-        });
+      if (!payload.name || !payload.personal_email) {
+        alert("Name and Personal Email are required.");
+        return;
       }
 
-      document.getElementById('regForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
+      const form = new FormData();
+      form.append('payload', JSON.stringify(payload));
 
-        const dept = document.getElementById('department').value;
-        if (!dept) {
-          alert("Please select Department first.");
-          return;
-        }
-
-        try {
-          const payload = {
-            department: dept,
-            name: "",
-            programme: "",
-            semester: "",
-            personal_email: "",
-            contact: "",
-            whatsapp: "",
-            univ_email: "",
-            other_department: "",
-            math_idcardBase64: null,
-            math_paymentBase64: null,
-            math_photoBase64: null,
-            other_photoBase64: null
-          };
-
-          if (dept === "Mathematics") {
-            payload.name           = document.getElementById('math-name').value.trim();
-            payload.programme      = document.getElementById('math-programme').value.trim();
-            payload.semester       = document.getElementById('math-semester').value.trim();
-            payload.personal_email = document.getElementById('math-email').value.trim();
-            payload.contact        = document.getElementById('math-contact').value.trim();
-            payload.whatsapp       = document.getElementById('math-whatsapp').value.trim();
-            payload.univ_email     = document.getElementById('math-univ-email').value.trim();
-
-            payload.math_idcardBase64  = await fileToBase64(document.getElementById('math-idcard'));
-            payload.math_paymentBase64 = await fileToBase64(document.getElementById('math-payment'));
-            payload.math_photoBase64   = await fileToBase64(document.getElementById('math-photo'));
-          } else {
-            payload.name             = document.getElementById('other-name').value.trim();
-            payload.other_department = document.getElementById('other-dept').value.trim();
-            payload.programme        = document.getElementById('other-programme').value.trim();
-            payload.semester         = document.getElementById('other-semester').value.trim();
-            payload.personal_email   = document.getElementById('other-email').value.trim();
-            payload.contact          = document.getElementById('other-contact').value.trim();
-            payload.whatsapp         = document.getElementById('other-whatsapp').value.trim();
-            payload.univ_email       = document.getElementById('other-univ-email').value.trim();
-
-            payload.other_photoBase64 = await fileToBase64(document.getElementById('other-photo'));
-          }
-
-          if (!payload.name || !payload.personal_email) {
-            alert("Name and Personal Email are required.");
-            return;
-          }
-
-          const res = await fetch(WEB_APP_URL, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
-          });
-
-          const json = await res.json();
-          if (json.success) {
-            alert("Registration submitted successfully.\nYour RegID: " + json.regId);
-            e.target.reset();
-            showForm();
-          } else {
-            alert("Submission failed: " + (json.error || "Unknown error"));
-          }
-        } catch (err) {
-          console.error(err);
-          alert("Error during submit: " + err.message);
-        }
+      const res = await fetch(WEB_APP_URL, {
+        method: "POST",
+        body: form
       });
-    </script>
+
+      const json = await res.json();
+
+      if (json.success) {
+        alert("Registration submitted successfully.\nYour RegID: " + json.regId);
+        e.target.reset();
+        showForm();
+      } else {
+        alert("Submission failed: " + (json.error || "Unknown error"));
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error during submit: " + err.message);
+    }
+  });
+</script>
 </body>
 </html>
