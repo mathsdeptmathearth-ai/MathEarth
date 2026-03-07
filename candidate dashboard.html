@@ -456,155 +456,217 @@
         </div>
       </section>
 
-    <script>
-  const EVENT_DETAILS = {
-    EVENT1: {
-      title: 'Event Name 1',
-      description: 'Detailed description of Event 1 will be shown here. Admin portal se text aayega.'
-    },
-    EVENT2: {
-      title: 'Event Name 2',
-      description: 'Detailed description of Event 2 will be shown here. Admin portal se text aayega.'
+   <script>
+  /********** CONFIG **********/
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwFhm7d1TP9_Z1B4vL__8DMf4RrNku0TLZi6d_1e1Md4fcOtXY9PWovhOjwO6vIdNZDMA/exec";
+
+  // Candidate login page se ye set karwana hoga:
+  // localStorage.setItem('mathearth_regid', regId);
+  let candidateRegId = null;
+  let events = [];
+  let announcements = [];
+  let currentEventId = null;
+
+  /********** INITIAL LOAD **********/
+  async function initCandidatePortal() {
+    candidateRegId = localStorage.getItem('mathearth_regid');
+    if (!candidateRegId) {
+      alert('Session expired. Please login again.');
+      window.location.href = 'index.html'; // ya jo bhi login page ka URL hai
+      return;
     }
-  };
-
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Apply for Entry Pass -->
-      <section class="card">
-        <div class="card-title">Apply for Entry Pass</div>
-        <div class="card-sub">Verify your details and confirm your request for the fest entry pass.</div>
-
-        <div class="entry-card">
-          <div class="entry-details" id="entry-details">
-            Please verify that the details in your profile (name, programme, semester and university email) are correct before applying for the entry pass.
-          </div>
-          <div class="entry-buttons">
-            <button id="btn-verify" class="btn-outline" onclick="verifyDetails()">I verify my details</button>
-            <button id="btn-apply-pass" class="btn-solid" onclick="applyForPass()">Apply for Entry Pass</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Contact section -->
-      <section class="card">
-        <div class="card-title">Contact Us</div>
-        <div class="card-sub">For any queries related to registration, events or entry pass.</div>
-        <div class="contact-card">
-          <div>
-            For all queries, write to: <br>
-            <strong>mathsdept.mathearth@gmail.com</strong>
-          </div>
-          <button class="contact-btn" onclick="contactEmail()">Mail us</button>
-        </div>
-      </section>
-
-    </section>
-  </div>
-
-  <!-- Event details modal -->
-  <div id="event-details-overlay" class="overlay">
-    <div class="modal">
-      <div class="modal-title" id="event-details-title">Event details</div>
-      <div class="modal-body" id="event-details-body">
-        <!-- Dynamic description; admin portal se aayega -->
-      </div>
-      <button class="modal-close" onclick="closeDetails()">Close</button>
-    </div>
-  </div>
-
-  <!-- Event apply modal -->
-  <div id="event-apply-overlay" class="overlay">
-    <div class="modal">
-      <div class="modal-title" id="event-apply-title">Apply for event</div>
-      <div class="modal-body">
-        <!-- Short instructions -->
-        <p id="event-apply-text" style="margin-bottom:0.6rem;">
-          Please confirm a few details for this event. Your basic profile (name, RegID, emails) will be attached automatically.
-        </p>
-        <div class="apply-field">
-          <label for="apply-team">Team name / Solo</label>
-          <input type="text" id="apply-team" placeholder="e.g., Solo / Team Integral Masters">
-        </div>
-        <div class="apply-field">
-          <label for="apply-notes">Any notes for organisers</label>
-          <textarea id="apply-notes" rows="3" placeholder="Optional: preferences, slot choice, etc."></textarea>
-        </div>
-        <button class="apply-submit" onclick="submitEventApplication()">Submit application</button>
-      </div>
-      <button class="modal-close" onclick="closeApply()">Close</button>
-    </div>
-  </div>
-
-  <script>
-    // Placeholder event details (later admin portal se JSON se aayega)
-    const EVENT_DETAILS = {
-      EVENT1: {
-        title: 'Math Quiz Marathon',
-        description: 'Multiple rounds of rapid-fire maths questions, puzzles and brain teasers. '
-          + 'Format and timings will be updated by the organisers. Bring your own pen and calculator (if allowed).'
-      },
-      EVENT2: {
-        title: 'Data Analytics Challenge',
-        description: 'Teams will work on a given dataset, derive insights and present results. '
-          + 'Basic knowledge of statistics / programming is helpful. Further instructions will be mailed to selected candidates.'
+    try {
+      const res = await fetch(WEB_APP_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode: "candidateDashboard", regId: candidateRegId })
+      });
+      const json = await res.json();
+      if (!json.success) {
+        alert('Failed to load dashboard: ' + (json.error || 'Unknown error'));
+        return;
       }
-    };
-
-    let currentEventId = null;
-
-    function openEventDetails(eventId) {
-      currentEventId = eventId;
-      const info = EVENT_DETAILS[eventId];
-      document.getElementById('event-details-title').textContent = info.title;
-      document.getElementById('event-details-body').textContent = info.description;
-      document.getElementById('event-details-overlay').classList.add('show');
+      fillProfile(json.profile);
+      announcements = json.announcements || [];
+      events = json.events || [];
+      renderAnnouncements();
+      renderEvents();
+    } catch (err) {
+      alert('Error loading dashboard: ' + err.message);
     }
-    function closeDetails() {
-      document.getElementById('event-details-overlay').classList.remove('show');
+  }
+
+  /********** PROFILE RENDER **********/
+  function fillProfile(p) {
+    document.getElementById('cand-name').textContent = p.name || '';
+    document.getElementById('cand-regid').textContent = 'RegID: ' + (p.regId || '');
+    document.getElementById('cand-dept').textContent = p.dept || '';
+    document.getElementById('cand-programme').textContent = p.programme || '';
+    document.getElementById('cand-semester').textContent = p.semester || '';
+    document.getElementById('cand-email').textContent = p.personalEmail || '';
+    document.getElementById('cand-uemail').textContent = p.univEmail || '';
+    if (p.photoUrl) {
+      document.getElementById('cand-photo').src = p.photoUrl;
+    }
+  }
+
+  /********** ANNOUNCEMENTS **********/
+  function renderAnnouncements() {
+    const latestBox = document.getElementById('ann-latest');
+    const latestTitle = document.getElementById('ann-latest-title');
+    const latestDate = document.getElementById('ann-latest-date');
+    const latestText = document.getElementById('ann-latest-text');
+    const listBox = document.getElementById('ann-list');
+    listBox.innerHTML = '';
+
+    if (!announcements.length) {
+      latestTitle.textContent = 'Welcome to MATH-EARTH!';
+      latestDate.textContent = '';
+      latestText.textContent = 'Announcements from organisers will appear here.';
+      return;
     }
 
-    function openEventApply(eventId) {
-      currentEventId = eventId;
-      const info = EVENT_DETAILS[eventId];
-      document.getElementById('event-apply-title').textContent = 'Apply: ' + info.title;
-      document.getElementById('event-apply-text').textContent =
-        'You are applying for "' + info.title + '". Fill the details below and submit. '
-        + 'A confirmation email will be sent to your registered email after approval.';
-      document.getElementById('apply-team').value = '';
-      document.getElementById('apply-notes').value = '';
-      document.getElementById('event-apply-overlay').classList.add('show');
-    }
-    function closeApply() {
-      document.getElementById('event-apply-overlay').classList.remove('show');
-    }
+    const latest = announcements[0];
+    latestTitle.textContent = latest.title || '';
+    latestDate.textContent = latest.time ? 'Posted: ' + new Date(latest.time).toLocaleString() : '';
+    latestText.textContent = latest.body || '';
 
-    function submitEventApplication() {
-      // Yahan backend call hoga (Apps Script web app) jisme RegID, eventId, team, notes send karoge.
-      // Abhi ke liye sirf front-end popup:
+    announcements.slice(1).forEach(a => {
+      const div = document.createElement('div');
+      div.className = 'ann-card';
+      div.innerHTML = `
+        <div class="ann-card-title">${a.title}</div>
+        <div class="ann-card-date">${a.time ? new Date(a.time).toLocaleString() : ''}</div>
+      `;
+      listBox.appendChild(div);
+    });
+  }
+
+  /********** EVENTS **********/
+  function renderEvents() {
+    const container = document.createElement('div');
+    container.className = 'events-grid';
+    events.forEach(ev => {
+      const card = document.createElement('div');
+      card.className = 'event-card';
+      const shortDesc = (ev.desc || '').substring(0, 140);
+      card.innerHTML = `
+        <div class="event-title">${ev.name}</div>
+        <div class="event-sub">${shortDesc}${ev.desc && ev.desc.length > 140 ? '...' : ''}</div>
+        <div class="event-buttons">
+          <button class="btn-sm btn-details" onclick="openEventDetails('${ev.id}')">View details</button>
+          <button class="btn-sm btn-apply" onclick="openEventApply('${ev.id}')">Apply</button>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    // Events section is not explicitly marked in HTML, so we inject below announcements card
+    const annCard = document.querySelector('.right-col .card'); // first card on right = announcements
+    if (annCard) {
+      // Agar already ek events-grid hai to replace
+      const old = annCard.parentElement.querySelector('.events-grid');
+      if (old) old.remove();
+      annCard.parentElement.insertBefore(container, annCard.nextSibling);
+    }
+  }
+
+  function getEventById(id) {
+    return events.find(e => e.id === id);
+  }
+
+  function openEventDetails(eventId) {
+    currentEventId = eventId;
+    const info = getEventById(eventId);
+    if (!info) return;
+    document.getElementById('event-details-title').textContent = info.name;
+    document.getElementById('event-details-body').textContent = info.desc || '';
+    document.getElementById('event-details-overlay').classList.add('show');
+  }
+  function closeDetails() {
+    document.getElementById('event-details-overlay').classList.remove('show');
+  }
+
+  function openEventApply(eventId) {
+    currentEventId = eventId;
+    const info = getEventById(eventId);
+    if (!info) return;
+    document.getElementById('event-apply-title').textContent = 'Apply: ' + info.name;
+    document.getElementById('event-apply-text').textContent =
+      'You are applying for "' + info.name + '". Fill the details below and submit. '
+      + 'A confirmation email will be sent to your registered email after approval.';
+    document.getElementById('apply-team').value = '';
+    document.getElementById('apply-notes').value = '';
+    document.getElementById('event-apply-overlay').classList.add('show');
+  }
+  function closeApply() {
+    document.getElementById('event-apply-overlay').classList.remove('show');
+  }
+
+  async function submitEventApplication() {
+    if (!currentEventId) return alert('No event selected.');
+    const team = document.getElementById('apply-team').value.trim();
+    const notes = document.getElementById('apply-notes').value.trim();
+    try {
+      const res = await fetch(WEB_APP_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mode: "applyEvent",
+          regId: candidateRegId,
+          eventId: currentEventId,
+          team: team,
+          notes: notes
+        })
+      });
+      const json = await res.json();
+      if (!json.success) {
+        alert('Failed to submit application: ' + (json.error || 'Unknown error'));
+        return;
+      }
       alert('Your application has been submitted. Please wait for approval on your registered email.');
       closeApply();
+    } catch (err) {
+      alert('Error submitting application: ' + err.message);
     }
+  }
 
-    function verifyDetails() {
-      document.getElementById('entry-details').textContent =
-        'You have confirmed that your profile details are correct. '
-        + 'Now click "Apply for Entry Pass" to submit your request.';
-      document.getElementById('btn-apply-pass').style.display = 'inline-block';
-    }
+  /********** ENTRY PASS **********/
+  function verifyDetails() {
+    document.getElementById('entry-details').textContent =
+      'You have confirmed that your profile details are correct. '
+      + 'Now click "Apply for Entry Pass" to submit your request.';
+    document.getElementById('btn-apply-pass').style.display = 'inline-block';
+  }
 
-    function applyForPass() {
-      // Yahan backend call (Apps Script) se entry pass request row + email jayega.
+  async function applyForPass() {
+    try {
+      const res = await fetch(WEB_APP_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mode: "applyEntryPass",
+          regId: candidateRegId
+        })
+      });
+      const json = await res.json();
+      if (!json.success) {
+        alert('Failed to submit entry pass request: ' + (json.error || 'Unknown error'));
+        return;
+      }
       alert('Your request for entry pass has been submitted.\nPlease wait for verification. '
         + 'Your pass will be sent to your registered university email.');
+    } catch (err) {
+      alert('Error submitting entry pass: ' + err.message);
     }
+  }
 
-    function contactEmail() {
-      window.location.href = 'mailto:mathsdept.mathearth@gmail.com?subject=MATH-EARTH%20Query';
-    }
-  </script>
+  /********** CONTACT **********/
+  function contactEmail() {
+    window.location.href = 'mailto:mathsdept.mathearth@gmail.com?subject=MATH-EARTH%20Query';
+  }
+
+  window.onload = initCandidatePortal;
+</script>
 </body>
 </html>
