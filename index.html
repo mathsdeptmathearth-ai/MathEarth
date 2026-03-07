@@ -290,55 +290,57 @@
         }
       }
 
-      async function handleLogin() {
-        const regid = document.getElementById('login-regid').value.trim();
-        const pass  = document.getElementById('login-password').value;
+  async function handleLogin() {
+  const regid = document.getElementById('login-regid').value.trim();
+  const pass  = document.getElementById('login-password').value;
 
-        if (!regid || !pass) {
-          alert("Please enter both Registration ID and password.");
-          return;
-        }
+  if (!regid || !pass) {
+    alert("Please enter both Registration ID and password.");
+    return;
+  }
 
-        // Admin login
-        if (regid === ADMIN_REGID && pass === ADMIN_PASSWORD) {
-          window.location.href = ADMIN_DASHBOARD_URL;
-          return;
-        }
+  // Admin login
+  if (regid === ADMIN_REGID && pass === ADMIN_PASSWORD) {
+    window.location.href = ADMIN_DASHBOARD_URL;
+    return;
+  }
 
-        // Candidate login: verify from sheet via backend
-        try {
-          const res = await fetch(BACKEND_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              mode: "loginCandidate",
-              regId: regid,
-              password: pass
-            })
-          });
+  // Candidate login: verify from sheet via backend
+  try {
+    const res = await fetch(BACKEND_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        mode: "loginCandidate",
+        regId: regid,
+        password: pass
+      })
+    });
 
-          const json = await res.json();
+    const json = await res.json();
 
-          if (!json.success) {
-            if (json.error === "CredentialNotMatched") {
-              alert("Credentials not matched. Please check your Registration ID and password.");
-            } else if (json.error === "NotEligible") {
-              alert("Your candidature is not marked as Eligible yet. Please contact organizer.");
-            } else {
-              alert("Login failed: " + (json.error || "Unknown error"));
-            }
-            return;
-          }
-
-          // Successful candidate login
-          // Agar dashboard ko candidate info chahiye to yahan localStorage me store kar sakte ho:
-          // localStorage.setItem('mathearth_candidate', JSON.stringify(json.candidate));
-          window.location.href = CANDIDATE_DASHBOARD_URL;
-
-        } catch (err) {
-          alert("Network error, please try again.\n" + err.message);
-        }
+    if (!json.success) {
+      if (json.error === "CredentialNotMatched") {
+        alert("Credentials not matched. Please check your Registration ID and password.");
+      } else if (json.error === "NotEligible") {
+        alert("Your candidature is not marked as Eligible yet. Please contact organizer.");
+      } else {
+        alert("Login failed: " + (json.error || "Unknown error"));
       }
+      return;
+    }
+
+    // Successful candidate login: RegID store + redirect
+    localStorage.setItem('mathearth_regid', regid);
+    // Optional: candidate info bhi store karna ho to
+    // localStorage.setItem('mathearth_candidate', JSON.stringify(json.candidate));
+
+    window.location.href = CANDIDATE_DASHBOARD_URL;
+
+  } catch (err) {
+    alert("Network error, please try again.\n" + err.message);
+  }
+}
     </script>
 </body>
 </html>
