@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MATH-EARTH Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      color: #ECEFF1;
+      min-height: 100vh;
+      display: flex;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* Login overlay */
+    .login-wrapper {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at top, rgba(0,0,0,0.9), rgba(0,0,0,0.98));
+      z-index: 999;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 380px;
+      background: rgba(15,32,39,0.95);
+      border-radius: 18px;
+      padding: 1.8rem 1.5rem 2rem;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.7);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .login-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+      color: #FFEB3B;
+    }
+    .login-sub {
+      font-size: 0.85rem;
+      color: #CFD8DC;
+      margin-bottom: 1rem;
+    }
+    .login-field {
+      margin-bottom: 0.8rem;
+      font-size: 0.85rem;
+    }
+    .login-field label {
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+    .login-field input {
+      width: 100%;
+      padding: 0.5rem 0.7rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(10,25,47,0.9);
+      color: #E0F7FA;
+      font-size: 0.85rem;
+    }
+    .login-btn {
+      width: 100%;
+      margin-top: 0.6rem;
+      padding: 0.6rem 1rem;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(45deg,#FF6B6B,#4ECDC4);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .login-error {
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      color: #FF8A80;
+      min-height: 1.1em;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 230px;
+      background: rgba(0,0,0,0.7);
+      border-right: 1px solid rgba(255,255,255,0.12);
+      padding: 1.4rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .brand {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #FFEB3B;
+      margin-bottom: 0.5rem;
+    }
+    .brand small {
+      display: block;
+      font-size: 0.7rem;
+      color: #CFD8DC;
+    }
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      margin-top: 0.5rem;
+    }
+    .nav button {
+      width: 100%;
+      text-align: left;
+      padding: 0.55rem 0.7rem;
+      border-radius: 10px;
+      border: none;
+      background: transparent;
+      color: #ECEFF1;
+      cursor: pointer;
+      font-size: 0.86rem;
+    }
+    .nav button.active {
+      background: linear-gradient(45deg,#00D4FF,#4ECDC4);
+      color: #0b1522;
+      font-weight: 600;
+    }
+    .nav button:hover {
+      background: rgba(255,255,255,0.08);
+    }
+    .sidebar-footer {
+      margin-top: auto;
+      font-size: 0.75rem;
+      color: #B0BEC5;
+    }
+
+    /* Main area */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .topbar {
+      padding: 0.8rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0,0,0,0.55);
+      border-bottom: 1px solid rgba(255,255,255,0.18);
+    }
+    .top-title {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: #FFE082;
+    }
+    .top-right {
+      font-size: 0.8rem;
+      color: #CFD8DC;
+    }
+
+    .content {
+      padding: 1rem 1.5rem 1.5rem;
+      display: grid;
+      grid-template-columns: minmax(0,1.8fr) minmax(0,1.1fr);
+      gap: 1.2rem;
+    }
+
+    .card {
+      background: rgba(0,0,0,0.55);
+      border-radius: 16px;
+      padding: 1rem 1rem 1.2rem;
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    }
+    .card-title {
+      font-size: 0.98rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      color: #FFEB3B;
+    }
+    .card-sub {
+      font-size: 0.8rem;
+      color: #B0BEC5;
+      margin-bottom: 0.7rem;
+    }
+
+    /* Registrations table */
+    .filters {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.7rem;
+      font-size: 0.8rem;
+    }
+    .filters select, .filters input {
+      padding: 0.35rem 0.6rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(10,25,47,0.9);
+      color: #E0F7FA;
+      font-size: 0.8rem;
+    }
+    .table-wrapper {
+      max-height: 380px;
+      overflow: auto;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+    }
+    thead {
+      background: rgba(255,255,255,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    th, td {
+      padding: 0.4rem 0.6rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      text-align: left;
+      white-space: nowrap;
+    }
+    tbody tr:hover {
+      background: rgba(255,255,255,0.04);
+      cursor: pointer;
+    }
+    .status-pill {
+      border-radius: 999px;
+      padding: 0.15rem 0.5rem;
+      font-size: 0.7rem;
+    }
+    .status-pending {
+      background: rgba(255,193,7,0.18);
+      color: #FFCA28;
+    }
+    .status-approved {
+      background: rgba(76,175,80,0.2);
+      color: #A5D6A7;
+    }
+    .status-rejected {
+      background: rgba(239,83,80,0.2);
+      color: #FF8A80;
+    }
+
+    /* Profile detail (right column) */
+    .profile-block {
+      font-size: 0.8rem;
+    }
+    .profile-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.3rem;
+    }
+    .profile-label {
+      color: #B0BEC5;
+      padding-right: 0.4rem;
+    }
+    .profile-value {
+      text-align: right;
+      max-width: 60%;
+    }
+    .profile-photo {
+      width: 90px;
+      height: 90px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid #4ECDC4;
+      margin-bottom: 0.5rem;
+    }
+    .profile-photo img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .status-buttons {
+      margin-top: 0.9rem;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 0.4rem;
+    }
+    .btn {
+      padding: 0.45rem 0.6rem;
+      border-radius: 999px;
+      border: none;
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn-pay-approve { background: linear-gradient(45deg,#66BB6A,#A5D6A7); color: #1B1B1B; }
+    .btn-pay-reject  { background: linear-gradient(45deg,#EF5350,#FF8A65); color: #fff; }
+    .btn-cand-elig   { background: linear-gradient(45deg,#29B6F6,#4DD0E1); color: #fff; }
+    .btn-cand-not    { background: linear-gradient(45deg,#8D6E63,#BCAAA4); color: #fff; }
+
+    .btn-mail {
+      margin-top: 0.7rem;
+      width: 100%;
+      background: linear-gradient(45deg,#FFCA28,#FFEE58);
+      color: #1B1B1B;
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .field {
+      margin-bottom: 0.6rem;
+      font-size: 0.8rem;
+    }
+    .field label {
+      display: block;
+      margin-bottom: 0.2rem;
+      color: #CFD8DC;
+    }
+    .field input, .field textarea {
+      width: 100%;
+      padding: 0.45rem 0.6rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(10,25,47,0.9);
+      color: #E0F7FA;
+      font-size: 0.8rem;
+    }
+    .field textarea { resize: vertical; min-height: 70px; }
+
+    .btn-small {
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(45deg,#4ECDC4,#00D4FF);
+      color: #fff;
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+      font-size: 0.76rem;
+    }
+    .pill {
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+
+    .history-list {
+      margin-top: 0.6rem;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+    .hist-card {
+      background: rgba(0,0,0,0.5);
+      border-radius: 10px;
+      padding: 0.6rem 0.7rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 0.78rem;
+      margin-bottom: 0.4rem;
+    }
+    .hist-title {
+      font-weight: 500;
+      margin-bottom: 0.2rem;
+    }
+    .hist-meta {
+      font-size: 0.7rem;
+      color: #B0BEC5;
+    }
+
+    @media (max-width: 960px) {
+      body { flex-direction: column; }
+      .sidebar { width: 100%; flex-direction: row; align-items: center; justify-content: space-between; }
+      .nav { flex-direction: row; flex-wrap: wrap; }
+      .content { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Login overlay -->
+  <div class="login-wrapper" id="login-wrapper">
+    <div class="login-card">
+      <div class="login-title">MATH-EARTH Admin Login</div>
+      <div class="login-sub">Only authorized department admin can access this panel.</div>
+      <div class="login-field">
+        <label for="login-email">Email</label>
+        <input type="email" id="login-email" placeholder="admin email">
+      </div>
+      <div class="login-field">
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" placeholder="password">
+      </div>
+      <button class="login-btn" onclick="handleLogin()">Login</button>
+      <div class="login-error" id="login-error"></div>
+    </div>
+  </div>
+
+  <!-- Admin layout -->
+  <aside class="sidebar">
+    <div>
+      <div class="brand">MATH-EARTH Admin
+        <small>Department of Mathematics, CURAJ</small>
+      </div>
+      <div class="nav">
+        <button class="active">Registrations</button>
+        <button>Events</button>
+        <button>Announcements</button>
+      </div>
+    </div>
+    <div class="sidebar-footer">
+      Logged in as: <strong>Admin</strong><br>
+      Sheet + Apps Script powered.
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="top-title">Admin Dashboard</div>
+      <div class="top-right">Review registrations · Manage events · Publish announcements</div>
+    </div>
+
+    <div class="content">
+      <!-- LEFT: Registrations table -->
+      <section class="card">
+        <div class="card-title">Registrations</div>
+        <div class="card-sub">Click any row to view full profile and update payment / candidature status.</div>
+
+        <div class="filters">
+          <select id="filter-dept" onchange="applyFilters()">
+            <option value="">All departments</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Other Department">Other Department</option>
+          </select>
+          <select id="filter-payment" onchange="applyFilters()">
+            <option value="">Payment: all</option>
+            <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+          <select id="filter-cand" onchange="applyFilters()">
+            <option value="">Candidature: all</option>
+            <option value="Pending">Pending</option>
+            <option value="Eligible">Eligible</option>
+            <option value="Not eligible">Not eligible</option>
+          </select>
+          <input id="search-name" type="text" placeholder="Search by name / RegID" oninput="applyFilters()">
+          <button class="btn-small" onclick="refreshRegistrations()">Refresh</button>
+        </div>
+
+        <div class="table-wrapper">
+          <table id="reg-table">
+            <thead>
+              <tr>
+                <th>RegID</th>
+                <th>Name</th>
+                <th>Dept</th>
+                <th>Programme</th>
+                <th>Sem</th>
+                <th>Payment</th>
+                <th>Candidature</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Rows via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- RIGHT: Candidate profile + Events & Announcements -->
+      <section class="stack">
+
+        <!-- Candidate profile + status controls -->
+        <div class="card">
+          <div class="card-title">Candidate details</div>
+          <div class="card-sub" id="candidate-sub">Select a candidate from the registrations table.</div>
+
+          <div class="profile-block" id="candidate-block" style="display:none;">
+            <div class="profile-photo">
+              <img id="cand-photo" src="https://via.placeholder.com/150x150.png?text=Photo" alt="Photo">
+            </div>
+
+            <div class="profile-row">
+              <div class="profile-label">Name</div>
+              <div id="cand-name" class="profile-value"></div>
+            </div>
+            <div class="profile-row">
+              <div class="profile-label">RegID</div>
+              <div id="cand-regid" class="profile-value"></div>
+            </div>
+            <div class="profile-row">
+              <div class="profile-label">Department</div>
+              <div id="cand-dept" class="profile-value"></div>
+            </div>
+            <div class="profile-row">
+              <div class="profile-label">Programme</div>
+              <div id="cand-prog" class="profile-value"></div>
+            </div>
+            <div class="profile-row">
+              <div class="profile-label">Semester</div>
+              <div id="cand-sem" class="profile-value"></div>
+            </div>
+            <div class="profile-row">
+              <div class="profile-label">Personal Email</div>
+              <div id="cand-email" class="profile-value"></div>
+            </div>
+            <div class="profile-row">
+              <div class="profile-label">University Email</div>
+              <div id="cand-uemail" class="profile-value"></div>
+            </div>
+
+            <div class="status-buttons">
+              <button class="btn btn-pay-approve" onclick="setPaymentStatus('Approved')">Payment Approve</button>
+              <button class="btn btn-pay-reject"  onclick="setPaymentStatus('Rejected')">Payment Reject</button>
+              <button class="btn btn-cand-elig"   onclick="setCandidatureStatus('Eligible')">Candidature Eligible</button>
+              <button class="btn btn-cand-not"    onclick="setCandidatureStatus('Not eligible')">Not eligible</button>
+            </div>
+
+            <button class="btn btn-mail" onclick="sendLoginMail()">Send login credentials mail</button>
+
+            <div class="pill-row">
+              <div class="pill" id="pill-payment">Payment: Pending</div>
+              <div class="pill" id="pill-cand">Candidature: Pending</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Announcements -->
+        <div class="card">
+          <div class="card-title">Announcements</div>
+          <div class="card-sub">Create a new announcement and push to all candidates.</div>
+
+          <div class="field">
+            <label for="ann-title">Title</label>
+            <input id="ann-title" type="text" placeholder="e.g., Entry Pass Collection Schedule">
+          </div>
+          <div class="field">
+            <label for="ann-body">Message</label>
+            <textarea id="ann-body" placeholder="Write announcement text here..."></textarea>
+          </div>
+          <button class="btn-small" onclick="publishAnnouncement()">Publish announcement</button>
+
+          <div class="history-list" id="ann-history"></div>
+        </div>
+
+        <!-- Events -->
+        <div class="card">
+          <div class="card-title">Events manager</div>
+          <div class="card-sub">Add or update events that appear on candidate portal for registration.</div>
+
+          <div class="field">
+            <label for="ev-name">Event name</label>
+            <input id="ev-name" type="text" placeholder="e.g., Math Quiz Marathon">
+          </div>
+          <div class="field">
+            <label for="ev-description">Event details</label>
+            <textarea id="ev-description" placeholder="Describe rules, rounds, date/time, team size etc."></textarea>
+          </div>
+          <button class="btn-small" onclick="saveEvent()">Save / Publish event</button>
+
+          <div class="history-list" id="ev-list"></div>
+        </div>
+
+      </section>
+    </div>
+  </div>
+
+<script>
+  /********** SIMPLE LOGIN (front-end only) **********/
+  const ADMIN_EMAIL = "mathsdept.mathearth@gmail.com";
+  const ADMIN_PASSWORD = "MhEh@#26";
+
+  function handleLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const pass  = document.getElementById('login-password').value;
+    const errEl = document.getElementById('login-error');
+
+    if (email === ADMIN_EMAIL && pass === ADMIN_PASSWORD) {
+      localStorage.setItem('mathearth_admin_logged', 'yes');
+      document.getElementById('login-wrapper').style.display = 'none';
+      initDashboard();
+    } else {
+      errEl.textContent = "Invalid email or password.";
+    }
+  }
+
+  function checkLoginOnLoad() {
+    const logged = localStorage.getItem('mathearth_admin_logged');
+    if (logged === 'yes') {
+      document.getElementById('login-wrapper').style.display = 'none';
+      initDashboard();
+    }
+  }
+
+  /********** Registrations **********/
+  let registrations = [];
+  let filteredRegistrations = [];
+  let selectedIndex = null;
+
+  function refreshRegistrations() {
+    google.script.run
+      .withSuccessHandler(function(json) {
+        if (!json || !json.success) {
+          alert('Failed to load registrations');
+          return;
+        }
+        registrations = json.registrations || [];
+        applyFilters();
+      })
+      .withFailureHandler(function(err) {
+        alert('Failed to load registrations: ' + err.message);
+      })
+      .listRegistrations_();  // .gs function
+  }
+
+  function applyFilters() {
+    const dept = document.getElementById('filter-dept').value;
+    const pay  = document.getElementById('filter-payment').value;
+    const cand = document.getElementById('filter-cand').value;
+    const q    = document.getElementById('search-name').value.trim().toLowerCase();
+
+    filteredRegistrations = registrations.filter(r => {
+      if (dept && r.dept !== dept) return false;
+      if (pay && r.paymentStatus !== pay) return false;
+      if (cand && r.candStatus !== cand) return false;
+      if (q && !(String(r.name).toLowerCase().includes(q) || String(r.regId).toLowerCase().includes(q))) return false;
+      return true;
+    });
+    renderRegistrations();
+  }
+
+  function statusClass(status) {
+    if (status === 'Approved' || status === 'Eligible') return 'status-approved';
+    if (status === 'Rejected' || status === 'Not eligible') return 'status-rejected';
+    return 'status-pending';
+  }
+
+  function renderRegistrations() {
+    const tbody = document.querySelector('#reg-table tbody');
+    tbody.innerHTML = '';
+    filteredRegistrations.forEach((r, idx) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${r.regId}</td>
+        <td>${r.name}</td>
+        <td>${r.dept}</td>
+        <td>${r.programme}</td>
+        <td>${r.semester}</td>
+        <td><span class="status-pill ${statusClass(r.paymentStatus)}">${r.paymentStatus}</span></td>
+        <td><span class="status-pill ${statusClass(r.candStatus)}">${r.candStatus}</span></td>
+      `;
+      tr.onclick = () => selectCandidate(idx);
+      tbody.appendChild(tr);
+    });
+  }
+
+  function selectCandidate(idx) {
+    selectedIndex = idx;
+    const r = filteredRegistrations[idx];
+    document.getElementById('candidate-sub').textContent = 'Update payment and candidature status, view details and send login mail.';
+    document.getElementById('candidate-block').style.display = 'block';
+    document.getElementById('cand-photo').src = r.photoUrl || 'https://via.placeholder.com/150x150.png?text=Photo';
+    document.getElementById('cand-name').textContent = r.name;
+    document.getElementById('cand-regid').textContent = r.regId;
+    document.getElementById('cand-dept').textContent = r.dept;
+    document.getElementById('cand-prog').textContent = r.programme;
+    document.getElementById('cand-sem').textContent = r.semester;
+    document.getElementById('cand-email').textContent = r.personalEmail;
+    document.getElementById('cand-uemail').textContent = r.univEmail;
+    document.getElementById('pill-payment').textContent = 'Payment: ' + r.paymentStatus;
+    document.getElementById('pill-cand').textContent = 'Candidature: ' + r.candStatus;
+  }
+
+  function setPaymentStatus(status) {
+    if (selectedIndex === null) return alert('Select a candidate first.');
+    const r = filteredRegistrations[selectedIndex];
+
+    google.script.run
+      .withSuccessHandler(function(json) {
+        if (!json || !json.success) {
+          alert('Failed to update payment status');
+          return;
+        }
+        r.paymentStatus = status;
+        document.getElementById('pill-payment').textContent = 'Payment: ' + status;
+        applyFilters();
+      })
+      .withFailureHandler(function(err) {
+        alert('Failed to update: ' + err.message);
+      })
+      .updateStatus_({ regId: r.regId, paymentStatus: status });
+  }
+
+  function setCandidatureStatus(status) {
+    if (selectedIndex === null) return alert('Select a candidate first.');
+    const r = filteredRegistrations[selectedIndex];
+
+    google.script.run
+      .withSuccessHandler(function(json) {
+        if (!json || !json.success) {
+          alert('Failed to update candidature status');
+          return;
+        }
+        r.candStatus = status;
+        document.getElementById('pill-cand').textContent = 'Candidature: ' + status;
+        applyFilters();
+      })
+      .withFailureHandler(function(err) {
+        alert('Failed to update: ' + err.message);
+      })
+      .updateStatus_({ regId: r.regId, candStatus: status });
+  }
+
+  function sendLoginMail() {
+    if (selectedIndex === null) return alert('Select a candidate first.');
+    const r = filteredRegistrations[selectedIndex];
+    if (!confirm('Send login credentials mail to ' + r.personalEmail + '?')) return;
+
+    google.script.run
+      .withSuccessHandler(function(json) {
+        if (!json || !json.success) {
+          alert('Failed to send login mail');
+          return;
+        }
+        alert('Login mail sent.');
+      })
+      .withFailureHandler(function(err) {
+        alert('Failed to send mail: ' + err.message);
+      })
+      .sendLoginMail_({ regId: r.regId });
+  }
+
+  /********** Announcements **********/
+  let announcements = [];
+
+  function publishAnnouncement() {
+    const title = document.getElementById('ann-title').value.trim();
+    const body  = document.getElementById('ann-body').value.trim();
+    if (!title || !body) return alert('Title and message required.');
+
+    google.script.run
+      .withSuccessHandler(function(json) {
+        if (!json || !json.success) {
+          alert('Failed to publish announcement');
+          return;
+        }
+        document.getElementById('ann-title').value = '';
+        document.getElementById('ann-body').value = '';
+        loadAnnouncements();
+        alert('Announcement published.');
+      })
+      .withFailureHandler(function(err) {
+        alert('Failed: ' + err.message);
+      })
+      .createAnnouncement_({ title: title, body: body });
+  }
+
+  function loadAnnouncements() {
+    google.script.run
+      .withSuccessHandler(function(json) {
+        if (!json || !json.success) return;
+        announcements = json.announcements || [];
+        renderAnnouncements();
+      })
+      .withFailureHandler(function(err) {
+        console.error(err);
+      })
+      .listAnnouncements_();
+  }
+
+  function renderAnnouncements() {
+    const box = document.getElementById('ann-history');
+    box.innerHTML = '';
+    announcements.forEach(a => {
+      const div = document.createElement('div');
+      div.className = 'hist-card';
+      const timeStr = a.time ? new Date(a.time).toLocaleString() : '';
+      div.innerHTML = `
+        <div class="hist-title">${a.title}</div>
+        <div>${a.body}</div>
+        <div class="hist-meta">${timeStr}</div>
+      `;
+      box.appendChild(div);
+    });
+  }
+
+  /********** Events **********/
+  let events = [];
+
+  function saveEvent() {
+    const name = document.getElementById('ev-name').value.trim();
+    const desc = document.getElementById('ev-description').value.trim();
+    if (!name || !desc) return alert('Event name and details required.');
+
+    google.script.run
+      .withSuccessHandler(function(json) {
+        if (!json || !json.success) {
+          alert('Failed to save event');
+          return;
+        }
+        document.getElementById('ev-name').value = '';
+        document.getElementById('ev-description').value = '';
+        loadEvents();
+        alert('Event saved/published.');
+      })
+      .withFailureHandler(function(err) {
+        alert('Failed: ' + err.message);
+      })
+      .createEvent_({ name: name, desc: desc });
+  }
+
+  function loadEvents() {
+    google.script.run
+      .withSuccessHandler(function(json) {
+        if (!json || !json.success) return;
+        events = json.events || [];
+        renderEventsList();
+      })
+      .withFailureHandler(function(err) {
+        console.error(err);
+      })
+      .listEvents_();
+  }
+
+  function renderEventsList() {
+    const box = document.getElementById('ev-list');
+    box.innerHTML = '';
+    events.forEach(ev => {
+      const div = document.createElement('div');
+      div.className = 'hist-card';
+      const desc = ev.desc || '';
+      div.innerHTML = `
+        <div class="hist-title">${ev.name}</div>
+        <div>${desc.substring(0,120)}${desc.length>120?'...':''}</div>
+        <div class="hist-meta">ID: ${ev.id}</div>
+      `;
+      box.appendChild(div);
+    });
+  }
+
+  /********** Init **********/
+  function initDashboard() {
+    refreshRegistrations();
+    loadAnnouncements();
+    loadEvents();
+  }
+
+  window.onload = checkLoginOnLoad;
+</script>
+</body>
+</html>
