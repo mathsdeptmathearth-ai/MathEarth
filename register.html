@@ -322,7 +322,7 @@
         </div>
     </div>
 
-  <script>
+<script>
   function showForm() {
     const dept = document.getElementById('department').value;
     const mathForm = document.getElementById('math-form');
@@ -337,6 +337,7 @@
     }
   }
 
+  // Yahan hamesha latest Web App deployment ka /exec URL daalo
   const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwFhm7d1TP9_Z1B4vL__8DMf4RrNku0TLZi6d_1e1Md4fcOtXY9PWovhOjwO6vIdNZDMA/exec";
 
   async function fileToBase64(inputEl) {
@@ -412,7 +413,13 @@
       const res = await fetch(WEB_APP_URL, {
         method: "POST",
         body: form
+        // koi extra headers mat do, FormData se simple request jaati hai
       });
+
+      // Agar server error de, res.ok false ho sakta hai
+      if (!res.ok) {
+        throw new Error("Server returned " + res.status);
+      }
 
       const json = await res.json();
 
