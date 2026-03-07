@@ -161,9 +161,16 @@
 
     .content {
       padding: 1rem 1.5rem 1.5rem;
+    }
+
+    .content-section {
       display: grid;
       grid-template-columns: minmax(0,1.8fr) minmax(0,1.1fr);
       gap: 1.2rem;
+    }
+    #sec-events,
+    #sec-announcements {
+      grid-template-columns: 1fr;
     }
 
     .card {
@@ -376,7 +383,7 @@
       body { flex-direction: column; }
       .sidebar { width: 100%; flex-direction: row; align-items: center; justify-content: space-between; }
       .nav { flex-direction: row; flex-wrap: wrap; }
-      .content { grid-template-columns: 1fr; }
+      .content-section { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -406,9 +413,9 @@
         <small>Department of Mathematics, CURAJ</small>
       </div>
       <div class="nav">
-        <button class="active">Registrations</button>
-        <button>Events</button>
-        <button>Announcements</button>
+        <button id="tab-registrations" class="active" onclick="switchTab('registrations')">Registrations</button>
+        <button id="tab-events" onclick="switchTab('events')">Events</button>
+        <button id="tab-announcements" onclick="switchTab('announcements')">Announcements</button>
       </div>
     </div>
     <div class="sidebar-footer">
@@ -424,130 +431,116 @@
     </div>
 
     <div class="content">
-      <!-- LEFT: Registrations table -->
-      <section class="card">
-        <div class="card-title">Registrations</div>
-        <div class="card-sub">Click any row to view full profile and update payment / candidature status.</div>
 
-        <div class="filters">
-          <select id="filter-dept" onchange="applyFilters()">
-            <option value="">All departments</option>
-            <option value="Mathematics">Mathematics</option>
-            <option value="Other Department">Other Department</option>
-          </select>
-          <select id="filter-payment" onchange="applyFilters()">
-            <option value="">Payment: all</option>
-            <option value="Pending">Pending</option>
-            <option value="Approved">Approved</option>
-            <option value="Rejected">Rejected</option>
-          </select>
-          <select id="filter-cand" onchange="applyFilters()">
-            <option value="">Candidature: all</option>
-            <option value="Pending">Pending</option>
-            <option value="Eligible">Eligible</option>
-            <option value="Not eligible">Not eligible</option>
-          </select>
-          <input id="search-name" type="text" placeholder="Search by name / RegID" oninput="applyFilters()">
-          <button class="btn-small" onclick="refreshRegistrations()">Refresh</button>
-        </div>
+      <!-- REGISTRATIONS SECTION -->
+      <section id="sec-registrations" class="content-section">
+        <!-- LEFT: Registrations table -->
+        <section class="card">
+          <div class="card-title">Registrations</div>
+          <div class="card-sub">Click any row to view full profile and update payment / candidature status.</div>
 
-        <div class="table-wrapper">
-          <table id="reg-table">
-            <thead>
-              <tr>
-                <th>RegID</th>
-                <th>Name</th>
-                <th>Dept</th>
-                <th>Programme</th>
-                <th>Sem</th>
-                <th>Payment</th>
-                <th>Candidature</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Rows via JS -->
-            </tbody>
-          </table>
-        </div>
+          <div class="filters">
+            <select id="filter-dept" onchange="applyFilters()">
+              <option value="">All departments</option>
+              <option value="Mathematics">Mathematics</option>
+              <option value="Other Department">Other Department</option>
+            </select>
+            <select id="filter-payment" onchange="applyFilters()">
+              <option value="">Payment: all</option>
+              <option value="Pending">Pending</option>
+              <option value="Approved">Approved</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+            <select id="filter-cand" onchange="applyFilters()">
+              <option value="">Candidature: all</option>
+              <option value="Pending">Pending</option>
+              <option value="Eligible">Eligible</option>
+              <option value="Not eligible">Not eligible</option>
+            </select>
+            <input id="search-name" type="text" placeholder="Search by name / RegID" oninput="applyFilters()">
+            <button class="btn-small" onclick="refreshRegistrations()">Refresh</button>
+          </div>
+
+          <div class="table-wrapper">
+            <table id="reg-table">
+              <thead>
+                <tr>
+                  <th>RegID</th>
+                  <th>Name</th>
+                  <th>Dept</th>
+                  <th>Programme</th>
+                  <th>Sem</th>
+                  <th>Payment</th>
+                  <th>Candidature</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Rows via JS -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- RIGHT: Candidate profile -->
+        <section class="stack">
+          <div class="card">
+            <div class="card-title">Candidate details</div>
+            <div class="card-sub" id="candidate-sub">Select a candidate from the registrations table.</div>
+
+            <div class="profile-block" id="candidate-block" style="display:none;">
+              <div class="profile-photo">
+                <img id="cand-photo" src="https://via.placeholder.com/150x150.png?text=Photo" alt="Photo">
+              </div>
+
+              <div class="profile-row">
+                <div class="profile-label">Name</div>
+                <div id="cand-name" class="profile-value"></div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-label">RegID</div>
+                <div id="cand-regid" class="profile-value"></div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-label">Department</div>
+                <div id="cand-dept" class="profile-value"></div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-label">Programme</div>
+                <div id="cand-prog" class="profile-value"></div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-label">Semester</div>
+                <div id="cand-sem" class="profile-value"></div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-label">Personal Email</div>
+                <div id="cand-email" class="profile-value"></div>
+              </div>
+              <div class="profile-row">
+                <div class="profile-label">University Email</div>
+                <div id="cand-uemail" class="profile-value"></div>
+              </div>
+
+              <div class="status-buttons">
+                <button class="btn btn-pay-approve" onclick="setPaymentStatus('Approved')">Payment Approve</button>
+                <button class="btn btn-pay-reject"  onclick="setPaymentStatus('Rejected')">Payment Reject</button>
+                <button class="btn btn-cand-elig"   onclick="setCandidatureStatus('Eligible')">Candidature Eligible</button>
+                <button class="btn btn-cand-not"    onclick="setCandidatureStatus('Not eligible')">Not eligible</button>
+              </div>
+
+              <button class="btn btn-mail" onclick="sendLoginMail()">Send login credentials mail</button>
+
+              <div class="pill-row">
+                <div class="pill" id="pill-payment">Payment: Pending</div>
+                <div class="pill" id="pill-cand">Candidature: Pending</div>
+              </div>
+            </div>
+          </div>
+        </section>
       </section>
 
-      <!-- RIGHT: Candidate profile + Events & Announcements -->
-      <section class="stack">
-
-        <!-- Candidate profile + status controls -->
-        <div class="card">
-          <div class="card-title">Candidate details</div>
-          <div class="card-sub" id="candidate-sub">Select a candidate from the registrations table.</div>
-
-          <div class="profile-block" id="candidate-block" style="display:none;">
-            <div class="profile-photo">
-              <img id="cand-photo" src="https://via.placeholder.com/150x150.png?text=Photo" alt="Photo">
-            </div>
-
-            <div class="profile-row">
-              <div class="profile-label">Name</div>
-              <div id="cand-name" class="profile-value"></div>
-            </div>
-            <div class="profile-row">
-              <div class="profile-label">RegID</div>
-              <div id="cand-regid" class="profile-value"></div>
-            </div>
-            <div class="profile-row">
-              <div class="profile-label">Department</div>
-              <div id="cand-dept" class="profile-value"></div>
-            </div>
-            <div class="profile-row">
-              <div class="profile-label">Programme</div>
-              <div id="cand-prog" class="profile-value"></div>
-            </div>
-            <div class="profile-row">
-              <div class="profile-label">Semester</div>
-              <div id="cand-sem" class="profile-value"></div>
-            </div>
-            <div class="profile-row">
-              <div class="profile-label">Personal Email</div>
-              <div id="cand-email" class="profile-value"></div>
-            </div>
-            <div class="profile-row">
-              <div class="profile-label">University Email</div>
-              <div id="cand-uemail" class="profile-value"></div>
-            </div>
-
-            <div class="status-buttons">
-              <button class="btn btn-pay-approve" onclick="setPaymentStatus('Approved')">Payment Approve</button>
-              <button class="btn btn-pay-reject"  onclick="setPaymentStatus('Rejected')">Payment Reject</button>
-              <button class="btn btn-cand-elig"   onclick="setCandidatureStatus('Eligible')">Candidature Eligible</button>
-              <button class="btn btn-cand-not"    onclick="setCandidatureStatus('Not eligible')">Not eligible</button>
-            </div>
-
-            <button class="btn btn-mail" onclick="sendLoginMail()">Send login credentials mail</button>
-
-            <div class="pill-row">
-              <div class="pill" id="pill-payment">Payment: Pending</div>
-              <div class="pill" id="pill-cand">Candidature: Pending</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Announcements -->
-        <div class="card">
-          <div class="card-title">Announcements</div>
-          <div class="card-sub">Create a new announcement and push to all candidates.</div>
-
-          <div class="field">
-            <label for="ann-title">Title</label>
-            <input id="ann-title" type="text" placeholder="e.g., Entry Pass Collection Schedule">
-          </div>
-          <div class="field">
-            <label for="ann-body">Message</label>
-            <textarea id="ann-body" placeholder="Write announcement text here..."></textarea>
-          </div>
-          <button class="btn-small" onclick="publishAnnouncement()">Publish announcement</button>
-
-          <div class="history-list" id="ann-history"></div>
-        </div>
-
-        <!-- Events -->
+      <!-- EVENTS SECTION -->
+      <section id="sec-events" class="content-section" style="display:none;">
         <div class="card">
           <div class="card-title">Events manager</div>
           <div class="card-sub">Add or update events that appear on candidate portal for registration.</div>
@@ -565,7 +558,51 @@
           <div class="history-list" id="ev-list"></div>
         </div>
 
+        <div class="card" style="margin-top:1rem;">
+          <div class="card-title">Event applications</div>
+          <div class="card-sub">View how many candidates applied for each event and their details.</div>
+          <div class="table-wrapper">
+            <table id="event-app-table">
+              <thead>
+                <tr>
+                  <th>Event ID</th>
+                  <th>Event name</th>
+                  <th>RegID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Team / Solo</th>
+                  <th>Notes</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- JS rows -->
+              </tbody>
+            </table>
+          </div>
+        </div>
       </section>
+
+      <!-- ANNOUNCEMENTS SECTION -->
+      <section id="sec-announcements" class="content-section" style="display:none;">
+        <div class="card">
+          <div class="card-title">Announcements</div>
+          <div class="card-sub">Create a new announcement and push to all candidates.</div>
+
+          <div class="field">
+            <label for="ann-title">Title</label>
+            <input id="ann-title" type="text" placeholder="e.g., Entry Pass Collection Schedule">
+          </div>
+          <div class="field">
+            <label for="ann-body">Message</label>
+            <textarea id="ann-body" placeholder="Write announcement text here..."></textarea>
+          </div>
+          <button class="btn-small" onclick="publishAnnouncement()">Publish announcement</button>
+
+          <div class="history-list" id="ann-history"></div>
+        </div>
+      </section>
+
     </div>
   </div>
 
@@ -596,6 +633,29 @@
     if (logged === 'yes') {
       document.getElementById('login-wrapper').style.display = 'none';
       initDashboard();
+    }
+  }
+
+  /********** TAB SWITCH **********/
+  function switchTab(tab) {
+    document.getElementById('tab-registrations').classList.remove('active');
+    document.getElementById('tab-events').classList.remove('active');
+    document.getElementById('tab-announcements').classList.remove('active');
+
+    document.getElementById('sec-registrations').style.display = 'none';
+    document.getElementById('sec-events').style.display = 'none';
+    document.getElementById('sec-announcements').style.display = 'none';
+
+    if (tab === 'registrations') {
+      document.getElementById('tab-registrations').classList.add('active');
+      document.getElementById('sec-registrations').style.display = 'grid';
+    } else if (tab === 'events') {
+      document.getElementById('tab-events').classList.add('active');
+      document.getElementById('sec-events').style.display = 'block';
+      loadEventApplications();
+    } else if (tab === 'announcements') {
+      document.getElementById('tab-announcements').classList.add('active');
+      document.getElementById('sec-announcements').style.display = 'block';
     }
   }
 
@@ -811,6 +871,7 @@
 
   /********** Events **********/
   let events = [];
+  let eventApplications = [];
 
   async function saveEvent() {
     const name = document.getElementById('ev-name').value.trim();
@@ -866,6 +927,42 @@
         <div class="hist-meta">ID: ${ev.id}</div>
       `;
       box.appendChild(div);
+    });
+  }
+
+  async function loadEventApplications() {
+    try {
+      const res = await fetch(WEB_APP_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode: "listEventApplications" })
+      });
+      const json = await res.json();
+      if (!json || !json.success) return;
+      eventApplications = json.applications || [];
+      renderEventApplications();
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  function renderEventApplications() {
+    const tbody = document.querySelector('#event-app-table tbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    eventApplications.forEach(app => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${app.eventId}</td>
+        <td>${app.eventName}</td>
+        <td>${app.regId}</td>
+        <td>${app.name}</td>
+        <td>${app.email}</td>
+        <td>${app.team}</td>
+        <td>${app.notes || ''}</td>
+        <td>${app.status}</td>
+      `;
+      tbody.appendChild(tr);
     });
   }
 
