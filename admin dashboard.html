@@ -608,8 +608,8 @@
 
 <script>
   /********** CONFIG **********/
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwFhm7d1TP9_Z1B4vL__8DMf4RrNku0TLZi6d_1e1Md4fcOtXY9PWovhOjwO6vIdNZDMA/exec";
-
+const WEB_APP_URL = "";
+  
   /********** SIMPLE LOGIN (front-end only) **********/
   const ADMIN_EMAIL = "mathsdept.mathearth@gmail.com";
   const ADMIN_PASSWORD = "MhEh@#26";
@@ -664,24 +664,24 @@
   let filteredRegistrations = [];
   let selectedIndex = null;
 
-  async function refreshRegistrations() {
-    try {
-      const res = await fetch(WEB_APP_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mode: "listRegistrations" })
-      });
-      const json = await res.json();
-      if (!json || !json.success) {
-        alert('Failed to load registrations');
-        return;
-      }
-      registrations = json.registrations || [];
-      applyFilters();
-    } catch (err) {
-      alert('Failed to load registrations: ' + err.message);
+async function refreshRegistrations() {
+  try {
+    const res = await fetch(WEB_APP_URL || "", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: "payload=" + encodeURIComponent(JSON.stringify({ mode: "listRegistrations" }))
+    });
+    const json = await res.json();
+    if (!json || !json.success) {
+      alert('Failed to load registrations');
+      return;
     }
+    registrations = json.registrations || [];
+    applyFilters();
+  } catch (err) {
+    alert('Failed to load registrations: ' + err.message);
   }
+}
 
   function applyFilters() {
     const dept = document.getElementById('filter-dept').value;
