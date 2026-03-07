@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MATH-EARTH Candidate Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      color: #f5f5f5;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .top-bar {
+      padding: 1rem 1.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0,0,0,0.45);
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+    .top-title {
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      font-size: 1rem;
+      color: #FFE082;
+    }
+    .top-right {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .wrapper {
+      max-width: 1200px;
+      margin: 1.5rem auto 2.5rem;
+      padding: 0 1rem;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 1.5rem;
+    }
+
+    /* Left column: profile */
+    .card {
+      background: rgba(0,0,0,0.45);
+      border-radius: 18px;
+      padding: 1.6rem 1.4rem 1.8rem;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.16);
+    }
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+      color: #FFEB3B;
+    }
+    .card-sub {
+      font-size: 0.82rem;
+      color: #CFD8DC;
+      margin-bottom: 1rem;
+    }
+
+    .profile-top {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid #4ECDC4;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .profile-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    .profile-id {
+      font-size: 0.85rem;
+      color: #B2EBF2;
+      margin-top: 0.15rem;
+    }
+    .profile-badge {
+      display: inline-block;
+      margin-top: 0.4rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      background: linear-gradient(45deg,#FF6B6B,#FFB74D);
+      color: #1B1B1B;
+      font-weight: 600;
+    }
+
+    .profile-list {
+      margin-top: 0.6rem;
+      font-size: 0.85rem;
+    }
+    .profile-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.4rem;
+    }
+    .profile-label {
+      color: #B0BEC5;
+    }
+    .profile-value {
+      text-align: right;
+      max-width: 60%;
+    }
+
+    .small-pill {
+      margin-top: 0.8rem;
+      font-size: 0.75rem;
+      color: #B2EBF2;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      border: 1px dashed rgba(178,235,242,0.6);
+      text-align: center;
+    }
+
+    /* Right column sections */
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    /* Announcements */
+    .announcement-main {
+      border-left: 4px solid #FFEB3B;
+      padding-left: 0.9rem;
+      margin-bottom: 0.8rem;
+      background: radial-gradient(circle at left, rgba(255,235,59,0.25), transparent 65%);
+      border-radius: 12px;
+      padding-top: 0.8rem;
+      padding-bottom: 0.8rem;
+      padding-right: 0.8rem;
+    }
+    .ann-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.15rem;
+    }
+    .ann-meta {
+      font-size: 0.7rem;
+      color: #FFE082;
+      margin-bottom: 0.3rem;
+    }
+    .ann-text {
+      font-size: 0.85rem;
+      color: #ECEFF1;
+    }
+
+    .ann-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+      gap: 0.8rem;
+    }
+    .ann-card {
+      background: rgba(0,0,0,0.4);
+      border-radius: 12px;
+      padding: 0.8rem 0.9rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.82rem;
+    }
+    .ann-card-title {
+      font-weight: 500;
+      margin-bottom: 0.2rem;
+    }
+    .ann-card-date {
+      font-size: 0.7rem;
+      color: #B0BEC5;
+    }
+
+    /* Events */
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: 1rem;
+      margin-top: 0.6rem;
+    }
+    .event-card {
+      background: linear-gradient(145deg, rgba(0,0,0,0.5), rgba(33,150,243,0.3));
+      border-radius: 16px;
+      padding: 1rem;
+      border: 1px solid rgba(144,202,249,0.6);
+      box-shadow: 0 14px 32px rgba(33,150,243,0.4);
+    }
+    .event-title {
+      font-size: 0.98rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+    .event-sub {
+      font-size: 0.8rem;
+      color: #CFD8DC;
+      margin-bottom: 0.6rem;
+    }
+    .event-buttons {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .btn-sm {
+      flex: 1;
+      min-width: 90px;
+      padding: 0.45rem 0.7rem;
+      font-size: 0.8rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      color: #fff;
+    }
+    .btn-details {
+      background: linear-gradient(45deg,#4ECDC4,#00D4FF);
+    }
+    .btn-apply {
+      background: linear-gradient(45deg,#FF6B6B,#FFB74D);
+    }
+
+    /* Event details / apply modals (simple overlay) */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+    }
+    .overlay.show {
+      display: flex;
+    }
+    .modal {
+      width: 95%;
+      max-width: 540px;
+      background: rgba(0,0,0,0.9);
+      border-radius: 18px;
+      padding: 1.4rem 1.4rem 1.7rem;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .modal-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: #FFEB3B;
+    }
+    .modal-body {
+      font-size: 0.85rem;
+      color: #ECEFF1;
+      margin-bottom: 1rem;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+    .modal-close {
+      margin-top: 0.4rem;
+      padding: 0.5rem 1.2rem;
+      border-radius: 999px;
+      border: none;
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      font-size: 0.82rem;
+      cursor: pointer;
+    }
+
+    .apply-field {
+      margin-bottom: 0.7rem;
+    }
+    .apply-field label {
+      font-size: 0.8rem;
+      margin-bottom: 0.2rem;
+      display: block;
+      color: #B2EBF2;
+    }
+    .apply-field input,
+    .apply-field textarea {
+      width: 100%;
+      padding: 0.55rem 0.7rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.28);
+      background: rgba(15,23,42,0.9);
+      color: #E0F7FA;
+      font-size: 0.8rem;
+    }
+    .apply-submit {
+      margin-top: 0.2rem;
+      padding: 0.6rem 1.4rem;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(45deg,#FF6B6B,#FFB74D);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    /* Entry pass section */
+    .entry-card {
+      margin-top: 0.6rem;
+      background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(56,239,125,0.25));
+      border-radius: 16px;
+      padding: 1rem 1.1rem 1.3rem;
+      border: 1px solid rgba(129,199,132,0.7);
+    }
+    .entry-details {
+      font-size: 0.85rem;
+      color: #E8F5E9;
+      margin-bottom: 0.7rem;
+    }
+    .entry-buttons {
+      display: flex;
+      gap: 0.7rem;
+      flex-wrap: wrap;
+    }
+    .btn-outline {
+      padding: 0.55rem 1.2rem;
+      border-radius: 999px;
+      border: 1px solid rgba(200,230,201,0.9);
+      background: transparent;
+      color: #C8E6C9;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .btn-solid {
+      padding: 0.6rem 1.5rem;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(45deg,#66BB6A,#A5D6A7);
+      color: #1B1B1B;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: none;
+    }
+
+    /* Contact section */
+    .contact-card {
+      margin-top: 0.8rem;
+      background: rgba(0,0,0,0.5);
+      border-radius: 14px;
+      padding: 0.9rem 1rem 1.1rem;
+      border: 1px solid rgba(255,255,255,0.16);
+      font-size: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+    .contact-btn {
+      padding: 0.5rem 1.2rem;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(45deg,#4ECDC4,#00D4FF);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 900px) {
+      .wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="top-title">MATH-EARTH CANDIDATE PORTAL</div>
+    <div class="top-right">Department of Mathematics · Central University of Rajasthan</div>
+  </div>
+
+  <div class="wrapper">
+    <!-- LEFT: PROFILE -->
+    <aside class="card">
+      <div class="card-title">Your Profile</div>
+      <div class="card-sub">These details are based on your registration. Contact organisers if anything is incorrect.</div>
+
+      <div class="profile-top">
+        <div class="avatar">
+          <!-- Replace src with candidate photo URL from backend -->
+          <img id="cand-photo" src="https://via.placeholder.com/150x150.png?text=Photo" alt="Profile">
+        </div>
+        <div>
+          <div id="cand-name" class="profile-name">Candidate Name</div>
+          <div id="cand-regid" class="profile-id">RegID: ABCD1234</div>
+          <div class="profile-badge" id="cand-dept">Mathematics</div>
+        </div>
+      </div>
+
+      <div class="profile-list">
+        <div class="profile-row">
+          <div class="profile-label">Programme</div>
+          <div id="cand-programme" class="profile-value">M.Sc. Mathematics</div>
+        </div>
+        <div class="profile-row">
+          <div class="profile-label">Semester</div>
+          <div id="cand-semester" class="profile-value">II</div>
+        </div>
+        <div class="profile-row">
+          <div class="profile-label">Personal Email</div>
+          <div id="cand-email" class="profile-value">yourmail@example.com</div>
+        </div>
+        <div class="profile-row">
+          <div class="profile-label">University Email</div>
+          <div id="cand-uemail" class="profile-value">yourname@curaj.ac.in</div>
+        </div>
+      </div>
+
+      <div class="small-pill">
+        Entry Pass & Event approvals will be updated here and sent to your university email.
+      </div>
+    </aside>
+
+    <!-- RIGHT: ANNOUNCEMENTS, EVENTS, ENTRY PASS, CONTACT -->
+    <section class="right-col">
+
+      <!-- Announcements -->
+      <section class="card">
+        <div class="card-title">Announcements</div>
+        <div class="card-sub">Latest updates related to MATH-EARTH will appear here.</div>
+
+        <!-- Highlighted latest announcement -->
+        <div id="ann-latest" class="announcement-main">
+          <div class="ann-title" id="ann-latest-title">Welcome to MATH-EARTH!</div>
+          <div class="ann-meta" id="ann-latest-date">Posted: 05 March 2026</div>
+          <div class="ann-text" id="ann-latest-text">
+            Your registrations are being reviewed. Entry pass and event allocations will be shared soon.
+          </div>
+        </div>
+
+        <!-- Recent announcements list -->
+        <div id="ann-list" class="ann-list">
+          <!-- Example static items; backend se list fill kar sakte ho -->
+          <div class="ann-card">
+            <div class="ann-card-title">Mock Test schedule will be published tomorrow.</div>
+            <div class="ann-card-date">Posted: 04 March 2026</div>
+          </div>
+          <div class="ann-card">
+            <div class="ann-card-title">Keep checking this portal and your CURAJ email for updates.</div>
+            <div class="ann-card-date">Posted: 03 March 2026</div>
+          </div>
+        </div>
+      </section>
+
+    <script>
+  const EVENT_DETAILS = {
+    EVENT1: {
+      title: 'Event Name 1',
+      description: 'Detailed description of Event 1 will be shown here. Admin portal se text aayega.'
+    },
+    EVENT2: {
+      title: 'Event Name 2',
+      description: 'Detailed description of Event 2 will be shown here. Admin portal se text aayega.'
+    }
+  };
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Apply for Entry Pass -->
+      <section class="card">
+        <div class="card-title">Apply for Entry Pass</div>
+        <div class="card-sub">Verify your details and confirm your request for the fest entry pass.</div>
+
+        <div class="entry-card">
+          <div class="entry-details" id="entry-details">
+            Please verify that the details in your profile (name, programme, semester and university email) are correct before applying for the entry pass.
+          </div>
+          <div class="entry-buttons">
+            <button id="btn-verify" class="btn-outline" onclick="verifyDetails()">I verify my details</button>
+            <button id="btn-apply-pass" class="btn-solid" onclick="applyForPass()">Apply for Entry Pass</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact section -->
+      <section class="card">
+        <div class="card-title">Contact Us</div>
+        <div class="card-sub">For any queries related to registration, events or entry pass.</div>
+        <div class="contact-card">
+          <div>
+            For all queries, write to: <br>
+            <strong>mathsdept.mathearth@gmail.com</strong>
+          </div>
+          <button class="contact-btn" onclick="contactEmail()">Mail us</button>
+        </div>
+      </section>
+
+    </section>
+  </div>
+
+  <!-- Event details modal -->
+  <div id="event-details-overlay" class="overlay">
+    <div class="modal">
+      <div class="modal-title" id="event-details-title">Event details</div>
+      <div class="modal-body" id="event-details-body">
+        <!-- Dynamic description; admin portal se aayega -->
+      </div>
+      <button class="modal-close" onclick="closeDetails()">Close</button>
+    </div>
+  </div>
+
+  <!-- Event apply modal -->
+  <div id="event-apply-overlay" class="overlay">
+    <div class="modal">
+      <div class="modal-title" id="event-apply-title">Apply for event</div>
+      <div class="modal-body">
+        <!-- Short instructions -->
+        <p id="event-apply-text" style="margin-bottom:0.6rem;">
+          Please confirm a few details for this event. Your basic profile (name, RegID, emails) will be attached automatically.
+        </p>
+        <div class="apply-field">
+          <label for="apply-team">Team name / Solo</label>
+          <input type="text" id="apply-team" placeholder="e.g., Solo / Team Integral Masters">
+        </div>
+        <div class="apply-field">
+          <label for="apply-notes">Any notes for organisers</label>
+          <textarea id="apply-notes" rows="3" placeholder="Optional: preferences, slot choice, etc."></textarea>
+        </div>
+        <button class="apply-submit" onclick="submitEventApplication()">Submit application</button>
+      </div>
+      <button class="modal-close" onclick="closeApply()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    // Placeholder event details (later admin portal se JSON se aayega)
+    const EVENT_DETAILS = {
+      EVENT1: {
+        title: 'Math Quiz Marathon',
+        description: 'Multiple rounds of rapid-fire maths questions, puzzles and brain teasers. '
+          + 'Format and timings will be updated by the organisers. Bring your own pen and calculator (if allowed).'
+      },
+      EVENT2: {
+        title: 'Data Analytics Challenge',
+        description: 'Teams will work on a given dataset, derive insights and present results. '
+          + 'Basic knowledge of statistics / programming is helpful. Further instructions will be mailed to selected candidates.'
+      }
+    };
+
+    let currentEventId = null;
+
+    function openEventDetails(eventId) {
+      currentEventId = eventId;
+      const info = EVENT_DETAILS[eventId];
+      document.getElementById('event-details-title').textContent = info.title;
+      document.getElementById('event-details-body').textContent = info.description;
+      document.getElementById('event-details-overlay').classList.add('show');
+    }
+    function closeDetails() {
+      document.getElementById('event-details-overlay').classList.remove('show');
+    }
+
+    function openEventApply(eventId) {
+      currentEventId = eventId;
+      const info = EVENT_DETAILS[eventId];
+      document.getElementById('event-apply-title').textContent = 'Apply: ' + info.title;
+      document.getElementById('event-apply-text').textContent =
+        'You are applying for "' + info.title + '". Fill the details below and submit. '
+        + 'A confirmation email will be sent to your registered email after approval.';
+      document.getElementById('apply-team').value = '';
+      document.getElementById('apply-notes').value = '';
+      document.getElementById('event-apply-overlay').classList.add('show');
+    }
+    function closeApply() {
+      document.getElementById('event-apply-overlay').classList.remove('show');
+    }
+
+    function submitEventApplication() {
+      // Yahan backend call hoga (Apps Script web app) jisme RegID, eventId, team, notes send karoge.
+      // Abhi ke liye sirf front-end popup:
+      alert('Your application has been submitted. Please wait for approval on your registered email.');
+      closeApply();
+    }
+
+    function verifyDetails() {
+      document.getElementById('entry-details').textContent =
+        'You have confirmed that your profile details are correct. '
+        + 'Now click "Apply for Entry Pass" to submit your request.';
+      document.getElementById('btn-apply-pass').style.display = 'inline-block';
+    }
+
+    function applyForPass() {
+      // Yahan backend call (Apps Script) se entry pass request row + email jayega.
+      alert('Your request for entry pass has been submitted.\nPlease wait for verification. '
+        + 'Your pass will be sent to your registered university email.');
+    }
+
+    function contactEmail() {
+      window.location.href = 'mailto:mathsdept.mathearth@gmail.com?subject=MATH-EARTH%20Query';
+    }
+  </script>
+</body>
+</html>
