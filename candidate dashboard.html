@@ -2,671 +2,440 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>MATH-EARTH Candidate Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MATH-EARTH Candidate Portal</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-      color: #f5f5f5;
+      color: #ECEFF1;
       min-height: 100vh;
+      padding: 1.5rem;
     }
     a { color: inherit; text-decoration: none; }
 
-    .top-bar {
-      padding: 1rem 1.8rem;
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(0,0,0,0.45);
-      border-bottom: 1px solid rgba(255,255,255,0.15);
+      margin-bottom: 1rem;
     }
-    .top-title {
+    .title {
+      font-size: 1.4rem;
       font-weight: 600;
-      letter-spacing: 0.04em;
-      font-size: 1rem;
-      color: #FFE082;
+      color: #FFEB3B;
     }
-    .top-right {
-      font-size: 0.9rem;
-      opacity: 0.9;
+    .subtitle {
+      font-size: 0.85rem;
+      color: #CFD8DC;
     }
+    .back-link a {
+      color: #80DEEA;
+      font-size: 0.85rem;
+    }
+    .back-link a:hover { text-decoration: underline; }
 
-    .wrapper {
-      max-width: 1200px;
-      margin: 1.5rem auto 2.5rem;
-      padding: 0 1rem;
+    .grid {
       display: grid;
-      grid-template-columns: 320px 1fr;
-      gap: 1.5rem;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.4fr);
+      gap: 1.2rem;
+    }
+    @media (max-width: 900px) {
+      body { padding: 1rem; }
+      .grid { grid-template-columns: 1fr; }
     }
 
-    /* Left column: profile */
     .card {
-      background: rgba(0,0,0,0.45);
-      border-radius: 18px;
-      padding: 1.6rem 1.4rem 1.8rem;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.5);
-      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(0,0,0,0.55);
+      border-radius: 16px;
+      padding: 1rem 1.1rem 1.3rem;
+      border: 1px solid rgba(255,255,255,0.18);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
     }
     .card-title {
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 600;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.3rem;
       color: #FFEB3B;
     }
     .card-sub {
-      font-size: 0.82rem;
-      color: #CFD8DC;
-      margin-bottom: 1rem;
+      font-size: 0.8rem;
+      color: #B0BEC5;
+      margin-bottom: 0.7rem;
     }
 
-    .profile-top {
+    .profile {
       display: flex;
-      gap: 1rem;
-      align-items: center;
-      margin-bottom: 1rem;
+      gap: 0.9rem;
+      align-items: flex-start;
     }
-    .avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      border: 3px solid #4ECDC4;
+    .profile-photo {
+      width: 90px; height: 90px;
+      border-radius: 16px;
       overflow: hidden;
+      border: 2px solid #4ECDC4;
+      background: #102027;
       flex-shrink: 0;
     }
-    .avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .profile-photo img {
+      width: 100%; height: 100%; object-fit: cover;
     }
-    .profile-name {
-      font-size: 1.1rem;
-      font-weight: 600;
+    .profile-info {
+      font-size: 0.8rem;
     }
-    .profile-id {
-      font-size: 0.85rem;
-      color: #B2EBF2;
-      margin-top: 0.15rem;
+    .p-row { margin-bottom: 0.25rem; }
+    .p-label { color: #B0BEC5; padding-right: 0.3rem; }
+    .p-value { font-weight: 500; }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
     }
-    .profile-badge {
-      display: inline-block;
-      margin-top: 0.4rem;
+    .pill {
       padding: 0.2rem 0.6rem;
       border-radius: 999px;
-      font-size: 0.7rem;
-      background: linear-gradient(45deg,#FF6B6B,#FFB74D);
-      color: #1B1B1B;
-      font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.06);
     }
 
-    .profile-list {
-      margin-top: 0.6rem;
-      font-size: 0.85rem;
-    }
-    .profile-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0.4rem;
-    }
-    .profile-label {
-      color: #B0BEC5;
-    }
-    .profile-value {
-      text-align: right;
-      max-width: 60%;
-    }
-
-    .small-pill {
-      margin-top: 0.8rem;
-      font-size: 0.75rem;
-      color: #B2EBF2;
-      padding: 0.3rem 0.7rem;
+    .btn {
+      display: inline-block;
+      padding: 0.45rem 0.9rem;
       border-radius: 999px;
-      border: 1px dashed rgba(178,235,242,0.6);
+      border: none;
+      background: linear-gradient(45deg, #4ECDC4, #00D4FF);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-secondary {
+      background: linear-gradient(45deg, #FFB74D, #FFCA28);
+      color: #1B1B1B;
+    }
+    .btn-small {
+      padding: 0.35rem 0.75rem;
+      font-size: 0.75rem;
+    }
+    .btn-block {
+      width: 100%;
       text-align: center;
     }
 
-    /* Right column sections */
-    .right-col {
-      display: flex;
-      flex-direction: column;
-      gap: 1.2rem;
-    }
-
-    /* Announcements */
-    .announcement-main {
-      border-left: 4px solid #FFEB3B;
-      padding-left: 0.9rem;
-      margin-bottom: 0.8rem;
-      background: radial-gradient(circle at left, rgba(255,235,59,0.25), transparent 65%);
-      border-radius: 12px;
-      padding-top: 0.8rem;
-      padding-bottom: 0.8rem;
-      padding-right: 0.8rem;
-    }
-    .ann-title {
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 0.15rem;
-    }
-    .ann-meta {
-      font-size: 0.7rem;
-      color: #FFE082;
-      margin-bottom: 0.3rem;
-    }
-    .ann-text {
-      font-size: 0.85rem;
-      color: #ECEFF1;
-    }
-
-    .ann-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
-      gap: 0.8rem;
-    }
-    .ann-card {
-      background: rgba(0,0,0,0.4);
-      border-radius: 12px;
-      padding: 0.8rem 0.9rem;
-      border: 1px solid rgba(255,255,255,0.1);
-      font-size: 0.82rem;
-    }
-    .ann-card-title {
-      font-weight: 500;
-      margin-bottom: 0.2rem;
-    }
-    .ann-card-date {
-      font-size: 0.7rem;
-      color: #B0BEC5;
-    }
-
-    /* Events */
-    .events-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
-      gap: 1rem;
-      margin-top: 0.6rem;
-    }
-    .event-card {
-      background: linear-gradient(145deg, rgba(0,0,0,0.5), rgba(33,150,243,0.3));
-      border-radius: 16px;
-      padding: 1rem;
-      border: 1px solid rgba(144,202,249,0.6);
-      box-shadow: 0 14px 32px rgba(33,150,243,0.4);
-    }
-    .event-title {
-      font-size: 0.98rem;
-      font-weight: 600;
-      margin-bottom: 0.2rem;
-    }
-    .event-sub {
-      font-size: 0.8rem;
-      color: #CFD8DC;
-      margin-bottom: 0.6rem;
-    }
-    .event-buttons {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-    .btn-sm {
-      flex: 1;
-      min-width: 90px;
-      padding: 0.45rem 0.7rem;
-      font-size: 0.8rem;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      color: #fff;
-    }
-    .btn-details {
-      background: linear-gradient(45deg,#4ECDC4,#00D4FF);
-    }
-    .btn-apply {
-      background: linear-gradient(45deg,#FF6B6B,#FFB74D);
-    }
-
-    /* Event details / apply modals (simple overlay) */
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.75);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 20;
-    }
-    .overlay.show {
-      display: flex;
-    }
-    .modal {
-      width: 95%;
-      max-width: 540px;
-      background: rgba(0,0,0,0.9);
-      border-radius: 18px;
-      padding: 1.4rem 1.4rem 1.7rem;
-      border: 1px solid rgba(255,255,255,0.2);
-    }
-    .modal-title {
-      font-size: 1.05rem;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-      color: #FFEB3B;
-    }
-    .modal-body {
-      font-size: 0.85rem;
-      color: #ECEFF1;
-      margin-bottom: 1rem;
-      max-height: 260px;
+    .list {
+      max-height: 300px;
       overflow-y: auto;
     }
-    .modal-close {
-      margin-top: 0.4rem;
-      padding: 0.5rem 1.2rem;
-      border-radius: 999px;
-      border: none;
-      background: rgba(255,255,255,0.12);
-      color: #fff;
-      font-size: 0.82rem;
-      cursor: pointer;
-    }
-
-    .apply-field {
-      margin-bottom: 0.7rem;
-    }
-    .apply-field label {
-      font-size: 0.8rem;
-      margin-bottom: 0.2rem;
-      display: block;
-      color: #B2EBF2;
-    }
-    .apply-field input,
-    .apply-field textarea {
-      width: 100%;
-      padding: 0.55rem 0.7rem;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.28);
-      background: rgba(15,23,42,0.9);
-      color: #E0F7FA;
-      font-size: 0.8rem;
-    }
-    .apply-submit {
-      margin-top: 0.2rem;
-      padding: 0.6rem 1.4rem;
-      border-radius: 999px;
-      border: none;
-      background: linear-gradient(45deg,#FF6B6B,#FFB74D);
-      color: #fff;
-      font-weight: 600;
-      font-size: 0.9rem;
-      cursor: pointer;
-    }
-
-    /* Entry pass section */
-    .entry-card {
-      margin-top: 0.6rem;
-      background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(56,239,125,0.25));
-      border-radius: 16px;
-      padding: 1rem 1.1rem 1.3rem;
-      border: 1px solid rgba(129,199,132,0.7);
-    }
-    .entry-details {
-      font-size: 0.85rem;
-      color: #E8F5E9;
-      margin-bottom: 0.7rem;
-    }
-    .entry-buttons {
-      display: flex;
-      gap: 0.7rem;
-      flex-wrap: wrap;
-    }
-    .btn-outline {
-      padding: 0.55rem 1.2rem;
-      border-radius: 999px;
-      border: 1px solid rgba(200,230,201,0.9);
-      background: transparent;
-      color: #C8E6C9;
-      font-size: 0.85rem;
-      cursor: pointer;
-    }
-    .btn-solid {
-      padding: 0.6rem 1.5rem;
-      border-radius: 999px;
-      border: none;
-      background: linear-gradient(45deg,#66BB6A,#A5D6A7);
-      color: #1B1B1B;
-      font-weight: 700;
-      font-size: 0.9rem;
-      cursor: pointer;
-      display: none;
-    }
-
-    /* Contact section */
-    .contact-card {
-      margin-top: 0.8rem;
+    .item {
       background: rgba(0,0,0,0.5);
-      border-radius: 14px;
-      padding: 0.9rem 1rem 1.1rem;
-      border: 1px solid rgba(255,255,255,0.16);
-      font-size: 0.85rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.8rem;
-      flex-wrap: wrap;
+      border-radius: 10px;
+      padding: 0.7rem 0.75rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 0.78rem;
+      margin-bottom: 0.45rem;
     }
-    .contact-btn {
-      padding: 0.5rem 1.2rem;
-      border-radius: 999px;
-      border: none;
-      background: linear-gradient(45deg,#4ECDC4,#00D4FF);
-      color: #fff;
-      font-weight: 600;
-      font-size: 0.85rem;
-      cursor: pointer;
+    .item-title {
+      font-weight: 500;
+      margin-bottom: 0.15rem;
+    }
+    .item-meta {
+      font-size: 0.72rem;
+      color: #B0BEC5;
+      margin-bottom: 0.15rem;
+    }
+    .item-body {
+      font-size: 0.78rem;
     }
 
-    @media (max-width: 900px) {
-      .wrapper {
-        grid-template-columns: 1fr;
-      }
+    .event-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.35rem;
+    }
+    .event-chip {
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      font-size: 0.72rem;
+    }
+    .muted {
+      font-size: 0.75rem;
+      color: #B0BEC5;
+      margin-top: 0.25rem;
+    }
+
+    .status-ok {
+      color: #A5D6A7;
+    }
+    .status-bad {
+      color: #FF8A80;
+    }
+
+    .center-msg {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #CFD8DC;
+      margin-top: 1.5rem;
     }
   </style>
 </head>
 <body>
-  <div class="top-bar">
-    <div class="top-title">MATH-EARTH CANDIDATE PORTAL</div>
-    <div class="top-right">Department of Mathematics · Central University of Rajasthan</div>
-  </div>
-
-  <div class="wrapper">
-    <!-- LEFT: PROFILE -->
-    <aside class="card">
-      <div class="card-title">Your Profile</div>
-      <div class="card-sub">These details are based on your registration. Contact organisers if anything is incorrect.</div>
-
-      <div class="profile-top">
-        <div class="avatar">
-          <!-- Replace src with candidate photo URL from backend -->
-          <img id="cand-photo" src="https://via.placeholder.com/150x150.png?text=Photo" alt="Profile">
-        </div>
-        <div>
-          <div id="cand-name" class="profile-name">Candidate Name</div>
-          <div id="cand-regid" class="profile-id">RegID: ABCD1234</div>
-          <div class="profile-badge" id="cand-dept">Mathematics</div>
-        </div>
+  <div class="container">
+    <div class="topbar">
+      <div>
+        <div class="title">MATH-EARTH Candidate Dashboard</div>
+        <div class="subtitle" id="subtitle">Loading your profile...</div>
       </div>
-
-      <div class="profile-list">
-        <div class="profile-row">
-          <div class="profile-label">Programme</div>
-          <div id="cand-programme" class="profile-value">M.Sc. Mathematics</div>
-        </div>
-        <div class="profile-row">
-          <div class="profile-label">Semester</div>
-          <div id="cand-semester" class="profile-value">II</div>
-        </div>
-        <div class="profile-row">
-          <div class="profile-label">Personal Email</div>
-          <div id="cand-email" class="profile-value">yourmail@example.com</div>
-        </div>
-        <div class="profile-row">
-          <div class="profile-label">University Email</div>
-          <div id="cand-uemail" class="profile-value">yourname@curaj.ac.in</div>
-        </div>
+      <div class="back-link">
+        <a href="index.html">Logout &amp; Back to Home</a>
       </div>
+    </div>
 
-      <div class="small-pill">
-        Entry Pass & Event approvals will be updated here and sent to your university email.
-      </div>
-    </aside>
+    <div id="no-regid" class="center-msg" style="display:none;">
+      No login information found. Please login again from the home page.
+    </div>
 
-    <!-- RIGHT: ANNOUNCEMENTS, EVENTS, ENTRY PASS, CONTACT -->
-    <section class="right-col">
+    <div id="dashboard" class="grid" style="display:none;">
 
-      <!-- Announcements -->
+      <!-- LEFT: Profile + entry pass -->
       <section class="card">
-        <div class="card-title">Announcements</div>
-        <div class="card-sub">Latest updates related to MATH-EARTH will appear here.</div>
+        <div class="card-title">Your profile</div>
+        <div class="card-sub">Verify your details. In case of any mistake, contact the organizing team.</div>
 
-        <!-- Highlighted latest announcement -->
-        <div id="ann-latest" class="announcement-main">
-          <div class="ann-title" id="ann-latest-title">Welcome to MATH-EARTH!</div>
-          <div class="ann-meta" id="ann-latest-date">Posted: 05 March 2026</div>
-          <div class="ann-text" id="ann-latest-text">
-            Your registrations are being reviewed. Entry pass and event allocations will be shared soon.
+        <div class="profile">
+          <div class="profile-photo">
+            <img id="photo" src="https://via.placeholder.com/150x150.png?text=Photo" alt="Profile photo">
+          </div>
+          <div class="profile-info">
+            <div class="p-row"><span class="p-label">Name:</span> <span id="p-name" class="p-value"></span></div>
+            <div class="p-row"><span class="p-label">RegID:</span> <span id="p-regid" class="p-value"></span></div>
+            <div class="p-row"><span class="p-label">Department:</span> <span id="p-dept" class="p-value"></span></div>
+            <div class="p-row"><span class="p-label">Programme:</span> <span id="p-prog" class="p-value"></span></div>
+            <div class="p-row"><span class="p-label">Semester:</span> <span id="p-sem" class="p-value"></span></div>
+            <div class="p-row"><span class="p-label">Email:</span> <span id="p-email" class="p-value"></span></div>
           </div>
         </div>
 
-        <!-- Recent announcements list -->
-        <div id="ann-list" class="ann-list">
-          <!-- Example static items; backend se list fill kar sakte ho -->
-          <div class="ann-card">
-            <div class="ann-card-title">Mock Test schedule will be published tomorrow.</div>
-            <div class="ann-card-date">Posted: 04 March 2026</div>
-          </div>
-          <div class="ann-card">
-            <div class="ann-card-title">Keep checking this portal and your CURAJ email for updates.</div>
-            <div class="ann-card-date">Posted: 03 March 2026</div>
+        <div class="pill-row">
+          <div class="pill" id="pill-payment">Payment: Pending</div>
+          <div class="pill" id="pill-cand">Candidature: Pending</div>
+        </div>
+
+        <div style="margin-top:0.9rem;">
+          <button class="btn btn-block" onclick="applyEntryPass()">Apply for Entry Pass</button>
+          <div class="muted">
+            Entry pass will be generated only after your payment is approved and candidature is marked eligible.
           </div>
         </div>
       </section>
 
-   <script>
-  /********** CONFIG **********/
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwFhm7d1TP9_Z1B4vL__8DMf4RrNku0TLZi6d_1e1Md4fcOtXY9PWovhOjwO6vIdNZDMA/exec";
+      <!-- RIGHT: Announcements + events -->
+      <section class="card">
+        <div class="card-title">Announcements</div>
+        <div class="card-sub">Latest updates from organizing team.</div>
+        <div id="ann-list" class="list"></div>
 
-  // Candidate login page se ye set karwana hoga:
-  // localStorage.setItem('mathearth_regid', regId);
-  let candidateRegId = null;
-  let events = [];
-  let announcements = [];
-  let currentEventId = null;
-
-  /********** INITIAL LOAD **********/
-  async function initCandidatePortal() {
-    candidateRegId = localStorage.getItem('mathearth_regid');
-    if (!candidateRegId) {
-      alert('Session expired. Please login again.');
-      window.location.href = 'index.html'; // ya jo bhi login page ka URL hai
-      return;
-    }
-    try {
-      const res = await fetch(WEB_APP_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mode: "candidateDashboard", regId: candidateRegId })
-      });
-      const json = await res.json();
-      if (!json.success) {
-        alert('Failed to load dashboard: ' + (json.error || 'Unknown error'));
-        return;
-      }
-      fillProfile(json.profile);
-      announcements = json.announcements || [];
-      events = json.events || [];
-      renderAnnouncements();
-      renderEvents();
-    } catch (err) {
-      alert('Error loading dashboard: ' + err.message);
-    }
-  }
-
-  /********** PROFILE RENDER **********/
-  function fillProfile(p) {
-    document.getElementById('cand-name').textContent = p.name || '';
-    document.getElementById('cand-regid').textContent = 'RegID: ' + (p.regId || '');
-    document.getElementById('cand-dept').textContent = p.dept || '';
-    document.getElementById('cand-programme').textContent = p.programme || '';
-    document.getElementById('cand-semester').textContent = p.semester || '';
-    document.getElementById('cand-email').textContent = p.personalEmail || '';
-    document.getElementById('cand-uemail').textContent = p.univEmail || '';
-    if (p.photoUrl) {
-      document.getElementById('cand-photo').src = p.photoUrl;
-    }
-  }
-
-  /********** ANNOUNCEMENTS **********/
-  function renderAnnouncements() {
-    const latestBox = document.getElementById('ann-latest');
-    const latestTitle = document.getElementById('ann-latest-title');
-    const latestDate = document.getElementById('ann-latest-date');
-    const latestText = document.getElementById('ann-latest-text');
-    const listBox = document.getElementById('ann-list');
-    listBox.innerHTML = '';
-
-    if (!announcements.length) {
-      latestTitle.textContent = 'Welcome to MATH-EARTH!';
-      latestDate.textContent = '';
-      latestText.textContent = 'Announcements from organisers will appear here.';
-      return;
-    }
-
-    const latest = announcements[0];
-    latestTitle.textContent = latest.title || '';
-    latestDate.textContent = latest.time ? 'Posted: ' + new Date(latest.time).toLocaleString() : '';
-    latestText.textContent = latest.body || '';
-
-    announcements.slice(1).forEach(a => {
-      const div = document.createElement('div');
-      div.className = 'ann-card';
-      div.innerHTML = `
-        <div class="ann-card-title">${a.title}</div>
-        <div class="ann-card-date">${a.time ? new Date(a.time).toLocaleString() : ''}</div>
-      `;
-      listBox.appendChild(div);
-    });
-  }
-
-  /********** EVENTS **********/
-  function renderEvents() {
-    const container = document.createElement('div');
-    container.className = 'events-grid';
-    events.forEach(ev => {
-      const card = document.createElement('div');
-      card.className = 'event-card';
-      const shortDesc = (ev.desc || '').substring(0, 140);
-      card.innerHTML = `
-        <div class="event-title">${ev.name}</div>
-        <div class="event-sub">${shortDesc}${ev.desc && ev.desc.length > 140 ? '...' : ''}</div>
-        <div class="event-buttons">
-          <button class="btn-sm btn-details" onclick="openEventDetails('${ev.id}')">View details</button>
-          <button class="btn-sm btn-apply" onclick="openEventApply('${ev.id}')">Apply</button>
+        <div style="margin-top:1rem;">
+          <div class="card-title" style="font-size:0.95rem;">Events</div>
+          <div class="card-sub">Apply for events of your choice. You can apply for multiple events.</div>
+          <div id="event-list" class="list"></div>
         </div>
-      `;
-      container.appendChild(card);
-    });
+      </section>
 
-    // Events section is not explicitly marked in HTML, so we inject below announcements card
-    const annCard = document.querySelector('.right-col .card'); // first card on right = announcements
-    if (annCard) {
-      // Agar already ek events-grid hai to replace
-      const old = annCard.parentElement.querySelector('.events-grid');
-      if (old) old.remove();
-      annCard.parentElement.insertBefore(container, annCard.nextSibling);
+    </div>
+  </div>
+
+  <script>
+    const BACKEND_URL = "https://script.google.com/macros/s/AKfycbwFhm7d1TP9_Z1B4vL__8DMf4RrNku0TLZi6d_1e1Md4fcOtXY9PWovhOjwO6vIdNZDMA/exec";
+
+    function statusPillText(id, text, ok) {
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.classList.remove('status-ok', 'status-bad');
+      if (ok === true) el.classList.add('status-ok');
+      if (ok === false) el.classList.add('status-bad');
     }
-  }
 
-  function getEventById(id) {
-    return events.find(e => e.id === id);
-  }
-
-  function openEventDetails(eventId) {
-    currentEventId = eventId;
-    const info = getEventById(eventId);
-    if (!info) return;
-    document.getElementById('event-details-title').textContent = info.name;
-    document.getElementById('event-details-body').textContent = info.desc || '';
-    document.getElementById('event-details-overlay').classList.add('show');
-  }
-  function closeDetails() {
-    document.getElementById('event-details-overlay').classList.remove('show');
-  }
-
-  function openEventApply(eventId) {
-    currentEventId = eventId;
-    const info = getEventById(eventId);
-    if (!info) return;
-    document.getElementById('event-apply-title').textContent = 'Apply: ' + info.name;
-    document.getElementById('event-apply-text').textContent =
-      'You are applying for "' + info.name + '". Fill the details below and submit. '
-      + 'A confirmation email will be sent to your registered email after approval.';
-    document.getElementById('apply-team').value = '';
-    document.getElementById('apply-notes').value = '';
-    document.getElementById('event-apply-overlay').classList.add('show');
-  }
-  function closeApply() {
-    document.getElementById('event-apply-overlay').classList.remove('show');
-  }
-
-  async function submitEventApplication() {
-    if (!currentEventId) return alert('No event selected.');
-    const team = document.getElementById('apply-team').value.trim();
-    const notes = document.getElementById('apply-notes').value.trim();
-    try {
-      const res = await fetch(WEB_APP_URL, {
+    async function apiPost(payload) {
+      const res = await fetch(BACKEND_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+        body: JSON.stringify(payload)
+      });
+      return res.json();
+    }
+
+    function renderAnnouncements(list) {
+      const box = document.getElementById('ann-list');
+      box.innerHTML = "";
+      if (!list || list.length === 0) {
+        box.innerHTML = '<div class="muted">No announcements yet.</div>';
+        return;
+      }
+      list.forEach(a => {
+        const div = document.createElement('div');
+        div.className = "item";
+        div.innerHTML =
+          '<div class="item-title">' + (a.title || '') + '</div>' +
+          '<div class="item-meta">' + (a.time ? new Date(a.time).toLocaleString() : '') + '</div>' +
+          '<div class="item-body">' + (a.body || '') + '</div>';
+        box.appendChild(div);
+      });
+    }
+
+    function renderEvents(list, regId) {
+      const box = document.getElementById('event-list');
+      box.innerHTML = "";
+      if (!list || list.length === 0) {
+        box.innerHTML = '<div class="muted">No events published yet.</div>';
+        return;
+      }
+      list.forEach(e => {
+        const div = document.createElement('div');
+        div.className = "item";
+        const id = e.id || '';
+        const name = e.name || '';
+        const desc = e.desc || '';
+
+        div.innerHTML =
+          '<div class="item-title">' + name + '</div>' +
+          '<div class="item-meta">Event ID: ' + id + '</div>' +
+          '<div class="item-body">' + desc + '</div>';
+
+        const btnRow = document.createElement('div');
+        btnRow.style.marginTop = "0.45rem";
+
+        const soloBtn = document.createElement('button');
+        soloBtn.className = "btn btn-small";
+        soloBtn.textContent = "Apply (Solo)";
+        soloBtn.onclick = () => applyEvent(id, name, "Solo", regId);
+
+        const teamBtn = document.createElement('button');
+        teamBtn.className = "btn btn-small btn-secondary";
+        teamBtn.style.marginLeft = "0.4rem";
+        teamBtn.textContent = "Apply (Team)";
+        teamBtn.onclick = () => {
+          const notes = prompt("Enter team details (team name / members):");
+          if (notes === null) return;
+          applyEvent(id, name, "Team", regId, notes);
+        };
+
+        btnRow.appendChild(soloBtn);
+        btnRow.appendChild(teamBtn);
+        div.appendChild(btnRow);
+
+        box.appendChild(div);
+      });
+    }
+
+    async function loadDashboard() {
+      const regId = localStorage.getItem('mathearth_regid');
+      if (!regId) {
+        document.getElementById('no-regid').style.display = "block";
+        document.getElementById('dashboard').style.display = "none";
+        document.getElementById('subtitle').textContent = "Not logged in.";
+        return;
+      }
+
+      try {
+        document.getElementById('subtitle').textContent = "Loading your data...";
+        const data = await apiPost({ mode: "candidateDashboard", regId: regId });
+
+        if (!data.success) {
+          document.getElementById('subtitle').textContent = "Error loading profile.";
+          alert("Error: " + (data.error || "Candidate not found"));
+          return;
+        }
+
+        const profile = data.profile || {};
+        const anns = data.announcements || [];
+        const events = data.events || [];
+
+        document.getElementById('dashboard').style.display = "grid";
+        document.getElementById('no-regid').style.display = "none";
+
+        document.getElementById('p-name').textContent = profile.name || '';
+        document.getElementById('p-regid').textContent = profile.regId || regId;
+        document.getElementById('p-dept').textContent = profile.dept || '';
+        document.getElementById('p-prog').textContent = profile.programme || '';
+        document.getElementById('p-sem').textContent = profile.semester || '';
+        document.getElementById('p-email').textContent = profile.personalEmail || '';
+
+        if (profile.photoUrl) {
+          document.getElementById('photo').src = profile.photoUrl;
+        }
+
+        statusPillText('pill-payment', 'Payment: ' + (profile.paymentStatus || 'Pending'),
+          profile.paymentStatus === 'Approved');
+        statusPillText('pill-cand', 'Candidature: ' + (profile.candStatus || 'Pending'),
+          profile.candStatus === 'Eligible');
+
+        renderAnnouncements(anns);
+        renderEvents(events, regId);
+
+        document.getElementById('subtitle').textContent = "Welcome, " + (profile.name || regId);
+      } catch (err) {
+        console.error(err);
+        document.getElementById('subtitle').textContent = "Error loading data.";
+        alert("Network error: " + err.message);
+      }
+    }
+
+    async function applyEvent(eventId, eventName, teamOrSolo, regId, notes) {
+      try {
+        const payload = {
           mode: "applyEvent",
-          regId: candidateRegId,
-          eventId: currentEventId,
-          team: team,
-          notes: notes
-        })
-      });
-      const json = await res.json();
-      if (!json.success) {
-        alert('Failed to submit application: ' + (json.error || 'Unknown error'));
+          regId: regId,
+          eventId: eventId,
+          team: teamOrSolo,
+          notes: notes || ""
+        };
+        const res = await apiPost(payload);
+        if (!res.success) {
+          alert("Could not apply for event. Please try again.");
+          return;
+        }
+        alert("Application submitted for event: " + eventName);
+      } catch (err) {
+        console.error(err);
+        alert("Error applying for event: " + err.message);
+      }
+    }
+
+    async function applyEntryPass() {
+      const regId = localStorage.getItem('mathearth_regid');
+      if (!regId) {
+        alert("Login information missing. Please login again.");
         return;
       }
-      alert('Your application has been submitted. Please wait for approval on your registered email.');
-      closeApply();
-    } catch (err) {
-      alert('Error submitting application: ' + err.message);
-    }
-  }
+      if (!confirm("Apply for entry pass with RegID " + regId + "?")) return;
 
-  /********** ENTRY PASS **********/
-  function verifyDetails() {
-    document.getElementById('entry-details').textContent =
-      'You have confirmed that your profile details are correct. '
-      + 'Now click "Apply for Entry Pass" to submit your request.';
-    document.getElementById('btn-apply-pass').style.display = 'inline-block';
-  }
-
-  async function applyForPass() {
-    try {
-      const res = await fetch(WEB_APP_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          mode: "applyEntryPass",
-          regId: candidateRegId
-        })
-      });
-      const json = await res.json();
-      if (!json.success) {
-        alert('Failed to submit entry pass request: ' + (json.error || 'Unknown error'));
-        return;
+      try {
+        const res = await apiPost({ mode: "applyEntryPass", regId: regId });
+        if (!res.success) {
+          alert("Could not submit entry pass request.");
+          return;
+        }
+        alert("Entry pass request submitted.");
+      } catch (err) {
+        console.error(err);
+        alert("Error submitting entry pass request: " + err.message);
       }
-      alert('Your request for entry pass has been submitted.\nPlease wait for verification. '
-        + 'Your pass will be sent to your registered university email.');
-    } catch (err) {
-      alert('Error submitting entry pass: ' + err.message);
     }
-  }
 
-  /********** CONTACT **********/
-  function contactEmail() {
-    window.location.href = 'mailto:mathsdept.mathearth@gmail.com?subject=MATH-EARTH%20Query';
-  }
-
-  window.onload = initCandidatePortal;
-</script>
+    // Load on page open
+    loadDashboard();
+  </script>
 </body>
 </html>
