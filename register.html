@@ -2,18 +2,426 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MATH-EARTH Registration</title>
-  <!-- 0 second me automatic redirect -->
-  <meta http-equiv="refresh" content="0;url=https://script.google.com/macros/s/AKfycbwFhm7d1TP9_Z1B4vL__8DMf4RrNku0TLZi6d_1e1Md4fcOtXY9PWovhOjwO6vIdNZDMA/exec?page=register">
+  <title>MATH-EARTH Registration | CURAJ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem 1rem;
+      color: #fff;
+    }
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+      border-radius: 20px;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.6);
+      padding: 2.5rem 2rem 3rem;
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .heading {
+      text-align: center;
+      margin: 0 0 0.5rem;
+    }
+    .heading h1 {
+      font-size: clamp(2.5rem, 6vw, 3.5rem);
+      font-weight: 800;
+      background: linear-gradient(45deg, #00D4FF, #FFD700, #FF6B6B, #4ECDC4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 25px rgba(0,0,0,0.7);
+    }
+    .heading p {
+      font-size: 1rem;
+      color: #F5F5F5;
+      opacity: 0.9;
+    }
+
+    .pill-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(0,0,0,0.35);
+      padding: 0.6rem 1.4rem;
+      border-radius: 999px;
+      margin: 1.2rem auto 2rem;
+      font-size: 0.9rem;
+      color: #E0F7FA;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+    .pill-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #4ECDC4;
+      box-shadow: 0 0 12px #4ECDC4;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: #FFEB3B;
+    }
+    .section-sub {
+      font-size: 0.9rem;
+      color: #E0E0E0;
+      margin-bottom: 1rem;
+    }
+
+    .form-card {
+      background: rgba(0,0,0,0.35);
+      border-radius: 16px;
+      padding: 1.8rem 1.5rem;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.2rem 1.5rem;
+    }
+    .full-width { grid-column: 1 / -1; }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+      color: #E0F7FA;
+    }
+    select, input[type="text"], input[type="email"], input[type="tel"], input[type="file"] {
+      width: 100%;
+      padding: 0.65rem 0.8rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(10,25,47,0.8);
+      color: #E0F7FA;
+      outline: none;
+      font-size: 0.9rem;
+      transition: border 0.2s, box-shadow 0.2s, transform 0.1s;
+    }
+    select:focus, input:focus {
+      border-color: #4ECDC4;
+      box-shadow: 0 0 0 2px rgba(78,205,196,0.4);
+      transform: translateY(-1px);
+    }
+    input[type="file"] {
+      padding: 0.4rem 0.8rem;
+      background: rgba(10,25,47,0.9);
+    }
+    small { font-size: 0.8rem; color: #B2EBF2; }
+
+    .tag {
+      display: inline-block;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      background: linear-gradient(45deg, #FF6B6B, #FFB74D);
+      color: #1B1B1B;
+      font-weight: 600;
+      margin-left: 0.5rem;
+    }
+
+    .hidden { display: none; }
+
+    .submit-row {
+      margin-top: 2rem;
+      text-align: center;
+    }
+    .btn-submit {
+      padding: 0.9rem 3rem;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 15px 35px rgba(255,107,107,0.6);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-submit:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 45px rgba(255,107,107,0.8);
+    }
+
+    .back-link {
+      margin-top: 1.2rem;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    .back-link a {
+      color: #80DEEA;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .back-link a:hover { text-decoration: underline; }
+
+    @media (max-width: 768px) {
+      .grid { grid-template-columns: 1fr; }
+      .container { padding: 1.7rem 1.2rem 2.2rem; }
+    }
+  </style>
 </head>
 <body>
-  <p>
-    Redirecting to registration form...
-    <br>
-    If not redirected, 
-    <a href="https://script.google.com/macros/s/AKfycbwFhm7d1TP9_Z1B4vL__8DMf4RrNku0TLZi6d_1e1Md4fcOtXY9PWovhOjwO6vIdNZDMA/exec?page=register">
-      click here
-    </a>.
-  </p>
+  <div class="container">
+    <div class="heading">
+      <h1>MATH-EARTH</h1>
+      <p>Participant Registration Portal</p>
+      <div class="pill-bar">
+        <span class="pill-dot"></span>
+        <span>Register for entry pass &amp; events</span>
+      </div>
+    </div>
+
+    <form id="regForm">
+      <div class="section-title">Step 1: Select Your Department</div>
+      <div class="section-sub">Choose whether you are from the Department of Mathematics or any other department of CURAJ.</div>
+
+      <div class="form-card" style="margin-bottom: 1.8rem;">
+        <div class="grid">
+          <div class="full-width">
+            <label for="department">Department</label>
+            <select id="department" name="department" onchange="showForm()">
+              <option value="">-- Select Department --</option>
+              <option value="Mathematics">Mathematics</option>
+              <option value="Other Department">Other Department</option>
+            </select>
+            <small>Fields will change automatically based on your selection.</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mathematics student form -->
+      <div id="math-form" class="form-card hidden">
+        <div class="section-title">
+          Mathematics Student Details <span class="tag">CURAJ Maths</span>
+        </div>
+        <div class="section-sub">
+          Fill all the details carefully. Use your CURAJ e-mail and upload clear documents.
+        </div>
+
+        <div class="grid">
+          <div>
+            <label for="math-name">Name</label>
+            <input type="text" id="math-name" placeholder="Full Name">
+          </div>
+          <div>
+            <label for="math-programme">Programme</label>
+            <input type="text" id="math-programme" placeholder="e.g., M.Sc. Mathematics">
+          </div>
+          <div>
+            <label for="math-semester">Semester</label>
+            <input type="text" id="math-semester" placeholder="e.g., II, IV">
+          </div>
+          <div>
+            <label for="math-email">Personal Email ID</label>
+            <input type="email" id="math-email" placeholder="yourmail@example.com">
+          </div>
+          <div>
+            <label for="math-contact">Contact Number</label>
+            <input type="tel" id="math-contact" placeholder="10-digit number">
+          </div>
+          <div>
+            <label for="math-whatsapp">WhatsApp Number</label>
+            <input type="tel" id="math-whatsapp" placeholder="10-digit number">
+          </div>
+          <div class="full-width">
+            <label for="math-univ-email">University Email ID</label>
+            <input type="email" id="math-univ-email" placeholder="yourname@curaj.ac.in">
+          </div>
+          <div>
+            <label for="math-idcard">Upload University ID Card (Image)</label>
+            <input type="file" id="math-idcard" accept="image/*">
+            <small>JPEG/PNG format preferred.</small>
+          </div>
+          <div>
+            <label for="math-payment">Upload Payment Screenshot / QR Slip</label>
+            <input type="file" id="math-payment" accept="image/*">
+            <small>Make sure UPI reference is clearly visible.</small>
+          </div>
+          <div class="full-width">
+            <label for="math-photo">Upload Recent Photograph</label>
+            <input type="file" id="math-photo" accept="image/*">
+          </div>
+        </div>
+      </div>
+
+      <!-- Other department form -->
+      <div id="other-form" class="form-card hidden" style="margin-top: 1.5rem;">
+        <div class="section-title">
+          Other Department Student Details <span class="tag">CURAJ</span>
+        </div>
+        <div class="section-sub">
+          Students from other departments of CURAJ can register here.
+        </div>
+
+        <div class="grid">
+          <div>
+            <label for="other-name">Name</label>
+            <input type="text" id="other-name" placeholder="Full Name">
+          </div>
+          <div>
+            <label for="other-dept">Department</label>
+            <input type="text" id="other-dept" placeholder="e.g., Physics, Computer Science">
+          </div>
+          <div>
+            <label for="other-programme">Programme</label>
+            <input type="text" id="other-programme" placeholder="e.g., B.Sc., M.Sc.">
+          </div>
+          <div>
+            <label for="other-semester">Semester</label>
+            <input type="text" id="other-semester" placeholder="e.g., II, VI">
+          </div>
+          <div>
+            <label for="other-email">Personal Email ID</label>
+            <input type="email" id="other-email" placeholder="yourmail@example.com">
+          </div>
+          <div>
+            <label for="other-contact">Contact Number</label>
+            <input type="tel" id="other-contact" placeholder="10-digit number">
+          </div>
+          <div>
+            <label for="other-whatsapp">WhatsApp Number</label>
+            <input type="tel" id="other-whatsapp" placeholder="10-digit number">
+          </div>
+          <div class="full-width">
+            <label for="other-univ-email">University Email ID</label>
+            <input type="email" id="other-univ-email" placeholder="yourname@curaj.ac.in">
+          </div>
+          <div class="full-width">
+            <label for="other-photo">Upload Recent Photograph</label>
+            <input type="file" id="other-photo" accept="image/*">
+          </div>
+        </div>
+      </div>
+
+      <div class="submit-row">
+        <button class="btn-submit" type="submit">Submit Registration</button>
+      </div>
+    </form>
+
+    <div class="back-link">
+      <a href="index.html">&larr; Back to Home</a>
+    </div>
+  </div>
+
+  <script>
+    // Apps Script backend URL
+    const BACKEND_URL = "https://script.google.com/macros/s/AKfycbwFhm7d1TP9_Z1B4vL__8DMf4RrNku0TLZi6d_1e1Md4fcOtXY9PWovhOjwO6vIdNZDMA/exec";
+
+    function showForm() {
+      const dept = document.getElementById('department').value;
+      const mathForm = document.getElementById('math-form');
+      const otherForm = document.getElementById('other-form');
+      mathForm.classList.add('hidden');
+      otherForm.classList.add('hidden');
+
+      if (dept === 'Mathematics') {
+        mathForm.classList.remove('hidden');
+      } else if (dept === 'Other Department') {
+        otherForm.classList.remove('hidden');
+      }
+    }
+
+    async function fileToBase64(inputEl) {
+      if (!inputEl || !inputEl.files || inputEl.files.length === 0) return null;
+      const file = inputEl.files[0];
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    document.getElementById('regForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const dept = document.getElementById('department').value;
+      if (!dept) {
+        alert("Please select Department first.");
+        return;
+      }
+
+      try {
+        const payload = {
+          department: dept,
+          name: "",
+          programme: "",
+          semester: "",
+          personal_email: "",
+          contact: "",
+          whatsapp: "",
+          univ_email: "",
+          other_department: "",
+          math_idcardBase64: null,
+          math_paymentBase64: null,
+          math_photoBase64: null,
+          other_photoBase64: null
+        };
+
+        if (dept === "Mathematics") {
+          payload.name           = document.getElementById('math-name').value.trim();
+          payload.programme      = document.getElementById('math-programme').value.trim();
+          payload.semester       = document.getElementById('math-semester').value.trim();
+          payload.personal_email = document.getElementById('math-email').value.trim();
+          payload.contact        = document.getElementById('math-contact').value.trim();
+          payload.whatsapp       = document.getElementById('math-whatsapp').value.trim();
+          payload.univ_email     = document.getElementById('math-univ-email').value.trim();
+
+          payload.math_idcardBase64  = await fileToBase64(document.getElementById('math-idcard'));
+          payload.math_paymentBase64 = await fileToBase64(document.getElementById('math-payment'));
+          payload.math_photoBase64   = await fileToBase64(document.getElementById('math-photo'));
+        } else {
+          payload.name             = document.getElementById('other-name').value.trim();
+          payload.other_department = document.getElementById('other-dept').value.trim();
+          payload.programme        = document.getElementById('other-programme').value.trim();
+          payload.semester         = document.getElementById('other-semester').value.trim();
+          payload.personal_email   = document.getElementById('other-email').value.trim();
+          payload.contact          = document.getElementById('other-contact').value.trim();
+          payload.whatsapp         = document.getElementById('other-whatsapp').value.trim();
+          payload.univ_email       = document.getElementById('other-univ-email').value.trim();
+
+          payload.other_photoBase64 = await fileToBase64(document.getElementById('other-photo'));
+        }
+
+        if (!payload.name || !payload.personal_email) {
+          alert("Name and Personal Email are required.");
+          return;
+        }
+
+        const res = await fetch(BACKEND_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)   // default registration handler
+        });
+
+        const json = await res.json();
+
+        if (json && json.success) {
+          alert("Registration submitted successfully.\nYour RegID: " + json.regId);
+          e.target.reset();
+          showForm();
+        } else {
+          alert("Submission failed: " + (json && json.error ? json.error : "Unknown error"));
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Error during submit: " + err.message);
+      }
+    });
+  </script>
 </body>
 </html>
