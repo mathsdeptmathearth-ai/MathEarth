@@ -1,346 +1,325 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MATH-EARTH | Department of Mathematics, Central University of Rajasthan</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Poppins', sans-serif;
-            overflow-x: hidden;
-            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-            color: white;
-            min-height: 100vh;
-        }
-        
-        .header {
-            padding: 1.5rem 2rem;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        .logo-left img, .logo-right img {
-            height: 70px;
-            width: auto;
-            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
-        }
-        .uni-center { flex: 1; text-align: center; }
-        .uni-name {
-            font-size: clamp(1.4rem, 3vw, 1.8rem);
-            font-weight: 600;
-            color: #FFD700;
-            letter-spacing: 1px;
-        }
-        .dept-name {
-            font-size: 1.1rem;
-            font-weight: 300;
-            color: #E0E0E0;
-            opacity: 0.9;
-            margin-top: 0.2rem;
-        }
-        
-        .hero {
-            text-align: center;
-            padding: 4rem 2rem 2rem;
-            position: relative;
-        }
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(circle, rgba(0,255,150,0.3) 0%, transparent 70%);
-            animation: pulse 4s infinite;
-            z-index: -1;
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 1; }
-        }
-        
-        .main-title {
-            font-size: clamp(3rem, 10vw, 8rem);
-            font-weight: 800;
-            background: linear-gradient(45deg, #00D4FF, #FFD700, #FF6B6B, #4ECDC4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 30px rgba(255,255,255,0.5);
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-        @keyframes glow {
-            from { filter: drop-shadow(0 0 20px #00D4FF); }
-            to   { filter: drop-shadow(0 0 30px #FFD700); }
-        }
-        
-        .slogan {
-            font-size: clamp(1.2rem, 4vw, 2rem);
-            font-weight: 300;
-            color: #F0F8FF;
-            max-width: 600px;
-            margin: 0 auto 2rem;
-            opacity: 0.9;
-            animation: fadeInUp 1.5s ease-out 0.5s both;
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to   { opacity: 0.9; transform: translateY(0); }
-        }
-        
-        .cta-section {
-            text-align: center;
-            padding: 3rem 2rem 1.5rem;
-            background: rgba(0,0,0,0.3);
-        }
-        .cta-buttons {
-            display: inline-flex;
-            gap: 1.2rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .cta-btn {
-            display: inline-block;
-            padding: 1.0rem 2.6rem;
-            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
-            color: white;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1.1rem;
-            border-radius: 50px;
-            box-shadow: 0 15px 35px rgba(255,107,107,0.5);
-            transition: all 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-        .cta-btn.secondary {
-            background: linear-gradient(45deg, #4ECDC4, #00D4FF);
-            box-shadow: 0 15px 35px rgba(0,212,255,0.5);
-        }
-        .cta-btn:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 45px rgba(255,107,107,0.7);
-        }
-        .cta-btn.secondary:hover {
-            box-shadow: 0 20px 45px rgba(0,212,255,0.7);
-        }
-
-        /* Login box */
-        .login-section {
-            padding: 1rem 2rem 3rem;
-            display: flex;
-            justify-content: center;
-        }
-        .login-card {
-            width: 100%;
-            max-width: 420px;
-            background: rgba(0,0,0,0.45);
-            border-radius: 18px;
-            padding: 1.8rem 1.6rem 2.2rem;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.18);
-            display: none;
-        }
-        .login-card.show {
-            display: block;
-            animation: fadeInUp 0.5s ease-out both;
-        }
-        .login-title {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-            text-align: center;
-            color: #FFEB3B;
-        }
-        .login-sub {
-            font-size: 0.9rem;
-            color: #E0E0E0;
-            text-align: center;
-            margin-bottom: 1.2rem;
-        }
-        .login-card label {
-            display: block;
-            font-size: 0.9rem;
-            margin-bottom: 0.25rem;
-            color: #E0F7FA;
-        }
-        .login-card input[type="text"],
-        .login-card input[type="password"] {
-            width: 100%;
-            padding: 0.65rem 0.8rem;
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.3);
-            background: rgba(10,25,47,0.9);
-            color: #E0F7FA;
-            outline: none;
-            font-size: 0.9rem;
-            margin-bottom: 0.9rem;
-            transition: border 0.2s, box-shadow 0.2s, transform 0.1s;
-        }
-        .login-card input:focus {
-            border-color: #4ECDC4;
-            box-shadow: 0 0 0 2px rgba(78,205,196,0.4);
-            transform: translateY(-1px);
-        }
-        .login-btn {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border-radius: 999px;
-            border: none;
-            background: linear-gradient(45deg, #4ECDC4, #00D4FF);
-            color: #fff;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            box-shadow: 0 12px 28px rgba(0,212,255,0.5);
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin-top: 0.3rem;
-        }
-        .login-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 18px 40px rgba(0,212,255,0.7);
-        }
-        .login-note {
-            margin-top: 0.8rem;
-            font-size: 0.8rem;
-            color: #B2EBF2;
-            text-align: center;
-        }
-
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                text-align: center;
-                padding: 1rem;
-            }
-            .logo-left, .logo-right { order: 2; }
-            .uni-center { order: 1; }
-            .logo-left img, .logo-right img { height: 55px; }
-        }
-    </style>
-</head>
-<body>
-    <header class="header">
-        <div class="logo-left">
-            <img src="curaj logo.png" alt="Central University of Rajasthan Logo" loading="lazy">
-        </div>
-        <div class="uni-center">
-            <div class="uni-name">Central University of Rajasthan</div>
-            <div class="dept-name">Department of Mathematics</div>
-        </div>
-        <div class="logo-right">
-            <img src="NAAC5.jpeg" alt="NAAC A++ Accredited" loading="lazy">
-        </div>
-    </header>
-    
-    <main class="hero">
-        <h1 class="main-title">MATH-EARTH</h1>
-        <p class="slogan">Where Numbers Dance, Data Thrives, and Logic Blooms into Infinite Possibilities</p>
-    </main>
-    
-    <section class="cta-section">
-        <div class="cta-buttons">
-            <a href="register.html" class="cta-btn">Register Now</a>
-            <button type="button" class="cta-btn secondary" onclick="toggleLogin()">Login</button>
-        </div>
-    </section>
-
-    <!-- Login section -->
-    <section class="login-section">
-        <div id="login-card" class="login-card">
-            <div class="login-title">Login</div>
-            <div class="login-sub">Admin and participants can login using Registration ID & password.</div>
-            <form id="loginForm" onsubmit="return false;">
-                <label for="login-regid">Registration ID</label>
-                <input type="text" id="login-regid" name="regid" placeholder="e.g., ABXZ4832">
-
-                <label for="login-password">Password</label>
-                <input type="password" id="login-password" name="password" placeholder="Your password">
-
-                <button type="button" class="login-btn" onclick="handleLogin()">Login</button>
-                <div class="login-note">
-                    Admin: RegID = MATHADMIN, Password = MhEh@#26
-                </div>
-            </form>
-        </div>
-    </section>
-
-    <script>
-      // Admin fixed credentials
-      const ADMIN_REGID = "MATHADMIN";
-      const ADMIN_PASSWORD = "MhEh@#26";
-
-      // Dashboard file names (same folder)
-      const ADMIN_DASHBOARD_URL = "admin dashboard.html";
-      const CANDIDATE_DASHBOARD_URL = "candidate dashboard.html";
-
-      // Backend web-app URL (Apps Script /exec URL)
-      const BACKEND_URL = "https://script.google.com/macros/s/AKfycbwFhm7d1TP9_Z1B4vL__8DMf4RrNku0TLZi6d_1e1Md4fcOtXY9PWovhOjwO6vIdNZDMA/exec";
-
-      function toggleLogin() {
-        const card = document.getElementById('login-card');
-        card.classList.toggle('show');
-        if (card.classList.contains('show')) {
-          card.scrollIntoView({ behavior: 'smooth' });
-        }
-      }
-
-  async function handleLogin() {
-  const regid = document.getElementById('login-regid').value.trim();
-  const pass  = document.getElementById('login-password').value;
-
-  if (!regid || !pass) {
-    alert("Please enter both Registration ID and password.");
-    return;
-  }
-
-  // Admin login
-  if (regid === ADMIN_REGID && pass === ADMIN_PASSWORD) {
-    window.location.href = ADMIN_DASHBOARD_URL;
-    return;
-  }
-
-  // Candidate login: verify from sheet via backend
-  try {
-    const res = await fetch(BACKEND_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        mode: "loginCandidate",
-        regId: regid,
-        password: pass
-      })
-    });
-
-    const json = await res.json();
-
-    if (!json.success) {
-      if (json.error === "CredentialNotMatched") {
-        alert("Credentials not matched. Please check your Registration ID and password.");
-      } else if (json.error === "NotEligible") {
-        alert("Your candidature is not marked as Eligible yet. Please contact organizer.");
-      } else {
-        alert("Login failed: " + (json.error || "Unknown error"));
-      }
-      return;
+  <meta charset="UTF-8">
+  <title>MATH-EARTH | Department of Mathematics, Central University of Rajasthan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      color: white;
+      min-height: 100vh;
     }
 
-    // Successful candidate login: RegID store + redirect
-    localStorage.setItem('mathearth_regid', regid);
-    // Optional: candidate info bhi store karna ho to
-    // localStorage.setItem('mathearth_candidate', JSON.stringify(json.candidate));
+    .header {
+      padding: 1.5rem 2rem;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .uni-center { text-align: center; }
+    .uni-name {
+      font-size: clamp(1.4rem, 3vw, 1.8rem);
+      font-weight: 600;
+      color: #FFD700;
+      letter-spacing: 1px;
+    }
+    .dept-name {
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: #E0E0E0;
+      opacity: 0.9;
+      margin-top: 0.2rem;
+    }
 
-    window.location.href = CANDIDATE_DASHBOARD_URL;
+    .hero {
+      text-align: center;
+      padding: 4rem 2rem 2rem;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle, rgba(0,255,150,0.3) 0%, transparent 70%);
+      animation: pulse 4s infinite;
+      z-index: -1;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
 
-  } catch (err) {
-    alert("Network error, please try again.\n" + err.message);
-  }
-}
-    </script>
+    .main-title {
+      font-size: clamp(3rem, 10vw, 8rem);
+      font-weight: 800;
+      background: linear-gradient(45deg, #00D4FF, #FFD700, #FF6B6B, #4ECDC4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 30px rgba(255,255,255,0.5);
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    @keyframes glow {
+      from { filter: drop-shadow(0 0 20px #00D4FF); }
+      to   { filter: drop-shadow(0 0 30px #FFD700); }
+    }
+
+    .slogan {
+      font-size: clamp(1.2rem, 4vw, 2rem);
+      font-weight: 300;
+      color: #F0F8FF;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      opacity: 0.9;
+      animation: fadeInUp 1.5s ease-out 0.5s both;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 0.9; transform: translateY(0); }
+    }
+
+    .cta-section {
+      text-align: center;
+      padding: 3rem 2rem 1.5rem;
+      background: rgba(0,0,0,0.3);
+    }
+    .cta-buttons {
+      display: inline-flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .cta-btn {
+      display: inline-block;
+      padding: 1.0rem 2.6rem;
+      background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-radius: 50px;
+      box-shadow: 0 15px 35px rgba(255,107,107,0.5);
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+    .cta-btn.secondary {
+      background: linear-gradient(45deg, #4ECDC4, #00D4FF);
+      box-shadow: 0 15px 35px rgba(0,212,255,0.5);
+    }
+    .cta-btn:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 45px rgba(255,107,107,0.7);
+    }
+    .cta-btn.secondary:hover {
+      box-shadow: 0 20px 45px rgba(0,212,255,0.7);
+    }
+
+    .login-section {
+      padding: 1rem 2rem 3rem;
+      display: flex;
+      justify-content: center;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(0,0,0,0.45);
+      border-radius: 18px;
+      padding: 1.8rem 1.6rem 2.2rem;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.18);
+      display: none;
+    }
+    .login-card.show {
+      display: block;
+      animation: fadeInUp 0.5s ease-out both;
+    }
+    .login-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      text-align: center;
+      color: #FFEB3B;
+    }
+    .login-sub {
+      font-size: 0.9rem;
+      color: #E0E0E0;
+      text-align: center;
+      margin-bottom: 1.2rem;
+    }
+    .login-card label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+      color: #E0F7FA;
+    }
+    .login-card input[type="text"],
+    .login-card input[type="password"] {
+      width: 100%;
+      padding: 0.65rem 0.8rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(10,25,47,0.9);
+      color: #E0F7FA;
+      outline: none;
+      font-size: 0.9rem;
+      margin-bottom: 0.9rem;
+      transition: border 0.2s, box-shadow 0.2s, transform 0.1s;
+    }
+    .login-card input:focus {
+      border-color: #4ECDC4;
+      box-shadow: 0 0 0 2px rgba(78,205,196,0.4);
+      transform: translateY(-1px);
+    }
+    .login-btn {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(45deg, #4ECDC4, #00D4FF);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 12px 28px rgba(0,212,255,0.5);
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-top: 0.3rem;
+    }
+    .login-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 40px rgba(0,212,255,0.7);
+    }
+    .login-note {
+      margin-top: 0.8rem;
+      font-size: 0.8rem;
+      color: #B2EBF2;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="uni-center">
+      <div class="uni-name">Central University of Rajasthan</div>
+      <div class="dept-name">Department of Mathematics</div>
+    </div>
+  </header>
+
+  <main class="hero">
+    <h1 class="main-title">MATH-EARTH</h1>
+    <p class="slogan">Where Numbers Dance, Data Thrives, and Logic Blooms into Infinite Possibilities</p>
+  </main>
+
+  <section class="cta-section">
+    <div class="cta-buttons">
+      <a href="register.html" class="cta-btn">Register Now</a>
+      <button type="button" class="cta-btn secondary" onclick="toggleLogin()">Login</button>
+    </div>
+  </section>
+
+  <section class="login-section">
+    <div id="login-card" class="login-card">
+      <div class="login-title">Login</div>
+      <div class="login-sub">Admin and participants can login using Registration ID &amp; password.</div>
+      <form id="loginForm" onsubmit="return false;">
+        <label for="login-regid">Registration ID</label>
+        <input type="text" id="login-regid" name="regid" placeholder="e.g., ABXZ4832">
+
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" name="password" placeholder="Your password">
+
+        <button type="button" class="login-btn" onclick="handleLogin()">Login</button>
+        <div class="login-note">
+          Admin: RegID = MATHADMIN, Password = MhEh@#26
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    // Admin fixed credentials
+    const ADMIN_REGID = "MATHADMIN";
+    const ADMIN_PASSWORD = "MhEh@#26";
+
+    // Local dashboard pages (same repo / same folder)
+    const ADMIN_DASHBOARD_URL     = "admin-dashboard.html";
+    const CANDIDATE_DASHBOARD_URL = "candidate-dashboard.html";
+
+    // Apps Script backend URL (/exec)
+    const BACKEND_URL = "https://script.google.com/macros/s/AKfycbwFhm7d1TP9_Z1B4vL__8DMf4RrNku0TLZi6d_1e1Md4fcOtXY9PWovhOjwO6vIdNZDMA/exec";
+
+    function toggleLogin() {
+      const card = document.getElementById('login-card');
+      card.classList.toggle('show');
+      if (card.classList.contains('show')) {
+        card.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    async function handleLogin() {
+      const regid = document.getElementById('login-regid').value.trim();
+      const pass  = document.getElementById('login-password').value;
+
+      if (!regid || !pass) {
+        alert("Please enter both Registration ID and password.");
+        return;
+      }
+
+      // Admin login
+      if (regid === ADMIN_REGID && pass === ADMIN_PASSWORD) {
+        window.location.href = ADMIN_DASHBOARD_URL;
+        return;
+      }
+
+      // Candidate login via Apps Script backend
+      try {
+        const res = await fetch(BACKEND_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            mode: "loginCandidate",
+            regId: regid,
+            password: pass
+          })
+        });
+
+        const json = await res.json();
+
+        if (!json.success) {
+          if (json.error === "CredentialNotMatched") {
+            alert("Credentials not matched. Please check your Registration ID and password.");
+          } else if (json.error === "NotEligible") {
+            alert("Your candidature is not marked as Eligible yet. Please contact organizer.");
+          } else {
+            alert("Login failed: " + (json.error || "Unknown error"));
+          }
+          return;
+        }
+
+        localStorage.setItem('mathearth_regid', regid);
+        window.location.href = CANDIDATE_DASHBOARD_URL;
+      } catch (err) {
+        alert("Network error, please try again.\n" + err.message);
+      }
+    }
+  </script>
 </body>
 </html>
