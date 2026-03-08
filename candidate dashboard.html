@@ -2,440 +2,839 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MATH-EARTH Candidate Dashboard</title>
+  <title>MATH-EARTH Candidate Portal | CURAJ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+
     body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-      color: #ECEFF1;
-      min-height: 100vh;
-      padding: 1.5rem;
+      font-family:'Poppins',sans-serif;
+      min-height:100vh;
+      background: radial-gradient(circle at top left,#00A859 0,#003366 45%,#000814 100%);
+      color:#fff;
+      overflow-x:hidden;
+      display:flex;
+      flex-direction:column;
     }
-    a { color: inherit; text-decoration: none; }
 
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
+    header {
+      padding:16px 18px 8px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
     }
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-    .title {
-      font-size: 1.4rem;
-      font-weight: 600;
-      color: #FFEB3B;
-    }
-    .subtitle {
-      font-size: 0.85rem;
-      color: #CFD8DC;
-    }
-    .back-link a {
-      color: #80DEEA;
-      font-size: 0.85rem;
-    }
-    .back-link a:hover { text-decoration: underline; }
 
-    .grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.4fr);
-      gap: 1.2rem;
+    .logo {
+      font-weight:700;
+      letter-spacing:2px;
+      font-size:1rem;
+      text-transform:uppercase;
     }
-    @media (max-width: 900px) {
-      body { padding: 1rem; }
-      .grid { grid-template-columns: 1fr; }
+
+    .header-right {
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .link {
+      font-size:0.78rem;
+      color:#d7fbe8;
+      text-decoration:none;
+      border-radius:999px;
+      border:1px solid rgba(215,251,232,0.4);
+      padding:6px 12px;
+      transition:all .2s;
+      backdrop-filter:blur(10px);
+    }
+    .link:hover {
+      background:rgba(215,251,232,0.18);
+      transform:translateY(-1px);
+    }
+
+    .chip {
+      font-size:0.76rem;
+      padding:5px 10px;
+      border-radius:999px;
+      background:rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.25);
+      max-width:180px;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      overflow:hidden;
+    }
+
+    .hero {
+      padding:8px 18px 14px;
+    }
+
+    .hero-title {
+      font-size:1.5rem;
+      font-weight:600;
+    }
+
+    .hero-sub {
+      font-size:0.8rem;
+      opacity:0.8;
+      margin-top:3px;
+    }
+
+    .layout {
+      flex:1;
+      padding:4px 14px 18px;
+      display:grid;
+      grid-template-columns:1.6fr 2fr;
+      gap:16px;
+    }
+
+    @media (max-width:900px) {
+      .layout {
+        grid-template-columns:1fr;
+      }
     }
 
     .card {
-      background: rgba(0,0,0,0.55);
-      border-radius: 16px;
-      padding: 1rem 1.1rem 1.3rem;
-      border: 1px solid rgba(255,255,255,0.18);
-      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      background:rgba(0,0,0,0.45);
+      border-radius:20px;
+      padding:16px 14px 18px;
+      border:1px solid rgba(255,255,255,0.18);
+      box-shadow:0 18px 38px rgba(0,0,0,0.7);
+      backdrop-filter:blur(18px);
+      animation:slideIn .5s ease-out;
     }
+
+    @keyframes slideIn {
+      from { opacity:0; transform:translateY(30px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .card-header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:8px;
+      gap:8px;
+    }
+
     .card-title {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-      color: #FFEB3B;
-    }
-    .card-sub {
-      font-size: 0.8rem;
-      color: #B0BEC5;
-      margin-bottom: 0.7rem;
+      font-size:1rem;
+      font-weight:600;
     }
 
-    .profile {
-      display: flex;
-      gap: 0.9rem;
-      align-items: flex-start;
-    }
-    .profile-photo {
-      width: 90px; height: 90px;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 2px solid #4ECDC4;
-      background: #102027;
-      flex-shrink: 0;
-    }
-    .profile-photo img {
-      width: 100%; height: 100%; object-fit: cover;
-    }
-    .profile-info {
-      font-size: 0.8rem;
-    }
-    .p-row { margin-bottom: 0.25rem; }
-    .p-label { color: #B0BEC5; padding-right: 0.3rem; }
-    .p-value { font-weight: 500; }
-
-    .pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-top: 0.5rem;
-      font-size: 0.75rem;
-    }
-    .pill {
-      padding: 0.2rem 0.6rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.18);
-      background: rgba(255,255,255,0.06);
+    .small-text {
+      font-size:0.78rem;
+      opacity:0.84;
     }
 
-    .btn {
-      display: inline-block;
-      padding: 0.45rem 0.9rem;
-      border-radius: 999px;
-      border: none;
-      background: linear-gradient(45deg, #4ECDC4, #00D4FF);
-      color: #fff;
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
+    /* Login section */
+    .login-wrap {
+      flex:1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
-    .btn-secondary {
-      background: linear-gradient(45deg, #FFB74D, #FFCA28);
-      color: #1B1B1B;
+
+    .login-card {
+      max-width:360px;
+      width:100%;
+      background:rgba(0,0,0,0.55);
+      border-radius:20px;
+      padding:22px 18px 20px;
+      border:1px solid rgba(255,255,255,0.18);
+      box-shadow:0 18px 38px rgba(0,0,0,0.8);
+      backdrop-filter:blur(18px);
+      animation:slideIn .5s ease-out;
     }
+
+    .login-title {
+      font-size:1.1rem;
+      font-weight:600;
+      margin-bottom:4px;
+      text-align:center;
+    }
+
+    .login-sub {
+      font-size:0.78rem;
+      opacity:0.8;
+      text-align:center;
+      margin-bottom:12px;
+    }
+
+    .field {
+      margin-bottom:10px;
+    }
+
+    label {
+      display:block;
+      font-size:0.78rem;
+      margin-bottom:3px;
+      opacity:0.9;
+    }
+
+    input {
+      width:100%;
+      padding:9px 10px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.26);
+      background:rgba(0,0,0,0.5);
+      color:#fff;
+      font-size:0.86rem;
+      outline:none;
+      transition:all .25s;
+    }
+
+    input:focus {
+      border-color:#00A859;
+      box-shadow:0 0 0 2px rgba(0,168,89,0.35);
+      background:rgba(0,0,0,0.7);
+    }
+
+    .btn-main {
+      width:100%;
+      padding:10px;
+      border-radius:999px;
+      border:none;
+      background:linear-gradient(135deg,#00C853,#00B0FF);
+      color:#fff;
+      font-weight:600;
+      cursor:pointer;
+      font-size:0.9rem;
+      letter-spacing:0.5px;
+      box-shadow:0 14px 30px rgba(0,176,255,0.45);
+      transition:all 0.22s;
+      margin-top:4px;
+    }
+
+    .btn-main:hover {
+      transform:translateY(-2px);
+      box-shadow:0 20px 38px rgba(0,176,255,0.6);
+    }
+
+    .btn-main:disabled {
+      opacity:0.6;
+      cursor:not-allowed;
+      box-shadow:none;
+    }
+
+    .login-status {
+      margin-top:8px;
+      font-size:0.78rem;
+      text-align:center;
+      color:#ffb4c4;
+    }
+
+    /* Profile card */
+    .profile-top {
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .avatar {
+      width:70px;
+      height:70px;
+      border-radius:50%;
+      border:2px solid rgba(255,255,255,0.6);
+      background:rgba(255,255,255,0.15);
+      overflow:hidden;
+      box-shadow:0 12px 26px rgba(0,0,0,0.7);
+    }
+
+    .avatar img {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .profile-name {
+      font-size:1rem;
+      font-weight:600;
+    }
+
+    .profile-meta {
+      font-size:0.74rem;
+      opacity:0.85;
+      margin-top:2px;
+    }
+
+    .profile-tags {
+      margin-top:8px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+
+    .tag {
+      font-size:0.7rem;
+      padding:4px 8px;
+      border-radius:999px;
+      background:rgba(0,0,0,0.5);
+      border:1px solid rgba(255,255,255,0.22);
+    }
+
+    .section-heading {
+      margin-top:10px;
+      font-size:0.9rem;
+      font-weight:500;
+    }
+
+    .section-body {
+      font-size:0.78rem;
+      opacity:0.9;
+      margin-top:4px;
+    }
+
+    /* Announcements */
+    .ann-highlight {
+      padding:10px 12px;
+      border-radius:16px;
+      background:linear-gradient(135deg,rgba(255,255,141,0.28),rgba(255,193,7,0.35));
+      color:#111;
+      margin-bottom:10px;
+      box-shadow:0 16px 34px rgba(0,0,0,0.7);
+      animation:glow 1.8s ease-in-out infinite alternate;
+      font-size:0.8rem;
+    }
+
+    .ann-highlight-title {
+      font-weight:600;
+      margin-bottom:3px;
+    }
+
+    @keyframes glow {
+      0%   { box-shadow:0 14px 30px rgba(255,241,118,0.4); }
+      100% { box-shadow:0 18px 40px rgba(255,241,118,0.75); }
+    }
+
+    .ann-list {
+      max-height:190px;
+      overflow-y:auto;
+      padding-right:4px;
+    }
+
+    .ann-item {
+      padding:8px 9px;
+      border-radius:12px;
+      margin-bottom:7px;
+      background:rgba(0,0,0,0.55);
+      border-left:4px solid rgba(255,255,255,0.2);
+      font-size:0.78rem;
+    }
+
+    .ann-item-title {
+      font-weight:500;
+      margin-bottom:2px;
+    }
+
+    .ann-item-meta {
+      font-size:0.7rem;
+      opacity:0.75;
+      margin-top:2px;
+    }
+
+    /* Events */
+    .event-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:10px;
+      margin-top:8px;
+    }
+
+    .event-card {
+      position:relative;
+      padding:10px 10px 12px;
+      border-radius:18px;
+      background:linear-gradient(145deg,rgba(0,184,212,0.22),rgba(0,230,118,0.16));
+      box-shadow:0 16px 34px rgba(0,0,0,0.75);
+      cursor:pointer;
+      overflow:hidden;
+      font-size:0.8rem;
+      transition:all .25s;
+    }
+
+    .event-card:hover {
+      transform:translateY(-4px) scale(1.02);
+      box-shadow:0 22px 40px rgba(0,0,0,0.9);
+    }
+
+    .event-title {
+      font-weight:600;
+      margin-bottom:3px;
+    }
+
+    .event-body {
+      opacity:0.9;
+      font-size:0.77rem;
+    }
+
+    .event-actions {
+      margin-top:6px;
+      display:flex;
+      justify-content:flex-end;
+      gap:6px;
+      flex-wrap:wrap;
+    }
+
     .btn-small {
-      padding: 0.35rem 0.75rem;
-      font-size: 0.75rem;
-    }
-    .btn-block {
-      width: 100%;
-      text-align: center;
-    }
-
-    .list {
-      max-height: 300px;
-      overflow-y: auto;
-    }
-    .item {
-      background: rgba(0,0,0,0.5);
-      border-radius: 10px;
-      padding: 0.7rem 0.75rem;
-      border: 1px solid rgba(255,255,255,0.12);
-      font-size: 0.78rem;
-      margin-bottom: 0.45rem;
-    }
-    .item-title {
-      font-weight: 500;
-      margin-bottom: 0.15rem;
-    }
-    .item-meta {
-      font-size: 0.72rem;
-      color: #B0BEC5;
-      margin-bottom: 0.15rem;
-    }
-    .item-body {
-      font-size: 0.78rem;
+      padding:5px 8px;
+      border-radius:999px;
+      border:none;
+      font-size:0.73rem;
+      cursor:pointer;
+      transition:all .18s;
+      background:rgba(0,0,0,0.5);
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.32);
     }
 
-    .event-chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-top: 0.35rem;
-    }
-    .event-chip {
-      padding: 0.2rem 0.6rem;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.15);
-      font-size: 0.72rem;
-    }
-    .muted {
-      font-size: 0.75rem;
-      color: #B0BEC5;
-      margin-top: 0.25rem;
+    .btn-small.primary {
+      background:#00C853;
+      border-color:#00E676;
     }
 
-    .status-ok {
-      color: #A5D6A7;
-    }
-    .status-bad {
-      color: #FF8A80;
+    .btn-small:hover {
+      transform:translateY(-1px);
+      box-shadow:0 8px 18px rgba(0,0,0,0.7);
     }
 
-    .center-msg {
-      text-align: center;
-      font-size: 0.85rem;
-      color: #CFD8DC;
-      margin-top: 1.5rem;
+    /* Modal */
+    .modal-backdrop {
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.85);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:999;
+    }
+
+    .modal {
+      background:#020712;
+      color:#fff;
+      border-radius:18px;
+      padding:16px 16px 16px;
+      max-width:420px;
+      width:90%;
+      border:1px solid rgba(255,255,255,0.18);
+      box-shadow:0 22px 45px rgba(0,0,0,0.9);
+      animation:slideIn .35s ease-out;
+      font-size:0.8rem;
+    }
+
+    .modal h3 {
+      font-size:1rem;
+      margin-bottom:6px;
+    }
+
+    .modal-meta {
+      font-size:0.72rem;
+      opacity:0.8;
+      margin-bottom:8px;
+    }
+
+    .modal-body {
+      max-height:260px;
+      overflow-y:auto;
+      padding-right:4px;
+    }
+
+    .modal-footer {
+      display:flex;
+      justify-content:flex-end;
+      gap:6px;
+      margin-top:10px;
+    }
+
+    footer {
+      text-align:center;
+      padding:8px 8px 14px;
+      font-size:0.7rem;
+      opacity:0.72;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="topbar">
-      <div>
-        <div class="title">MATH-EARTH Candidate Dashboard</div>
-        <div class="subtitle" id="subtitle">Loading your profile...</div>
+  <header>
+    <div class="logo">MATH‑EARTH · Candidate</div>
+    <div class="header-right">
+      <div class="chip" id="chip-user" style="display:none;">Logged in</div>
+      <a href="index.html" class="link">← Main site</a>
+    </div>
+  </header>
+
+  <!-- Login view -->
+  <section id="login-section" class="login-wrap">
+    <div class="login-card">
+      <div class="login-title">Candidate Login</div>
+      <div class="login-sub">
+        Use the Login ID and password sent to your email after approval.
       </div>
-      <div class="back-link">
-        <a href="index.html">Logout &amp; Back to Home</a>
+      <form onsubmit="doLogin(event)">
+        <div class="field">
+          <label for="login-id">Login ID (RegID)</label>
+          <input id="login-id" placeholder="e.g. MATHxxxxxx" required>
+        </div>
+        <div class="field">
+          <label for="login-pwd">Password</label>
+          <input id="login-pwd" type="password" placeholder="Password from email" required>
+        </div>
+        <button id="login-btn" class="btn-main" type="submit">Login</button>
+      </form>
+      <div id="login-status" class="login-status"></div>
+    </div>
+  </section>
+
+  <!-- Dashboard view -->
+  <section id="dashboard" style="display:none;">
+    <div class="hero">
+      <div class="hero-title">Welcome, <span id="user-name"></span>!</div>
+      <div class="hero-sub">
+        View announcements, explore events, and apply to participate.
       </div>
     </div>
 
-    <div id="no-regid" class="center-msg" style="display:none;">
-      No login information found. Please login again from the home page.
-    </div>
-
-    <div id="dashboard" class="grid" style="display:none;">
-
-      <!-- LEFT: Profile + entry pass -->
+    <main class="layout">
+      <!-- Left: Profile + Announcements -->
       <section class="card">
-        <div class="card-title">Your profile</div>
-        <div class="card-sub">Verify your details. In case of any mistake, contact the organizing team.</div>
-
-        <div class="profile">
-          <div class="profile-photo">
-            <img id="photo" src="https://via.placeholder.com/150x150.png?text=Photo" alt="Profile photo">
-          </div>
-          <div class="profile-info">
-            <div class="p-row"><span class="p-label">Name:</span> <span id="p-name" class="p-value"></span></div>
-            <div class="p-row"><span class="p-label">RegID:</span> <span id="p-regid" class="p-value"></span></div>
-            <div class="p-row"><span class="p-label">Department:</span> <span id="p-dept" class="p-value"></span></div>
-            <div class="p-row"><span class="p-label">Programme:</span> <span id="p-prog" class="p-value"></span></div>
-            <div class="p-row"><span class="p-label">Semester:</span> <span id="p-sem" class="p-value"></span></div>
-            <div class="p-row"><span class="p-label">Email:</span> <span id="p-email" class="p-value"></span></div>
+        <div class="card-header">
+          <div>
+            <div class="card-title">Your Profile</div>
+            <div class="small-text">Verify your details below. Contact organizers if something is incorrect.</div>
           </div>
         </div>
 
-        <div class="pill-row">
-          <div class="pill" id="pill-payment">Payment: Pending</div>
-          <div class="pill" id="pill-cand">Candidature: Pending</div>
-        </div>
-
-        <div style="margin-top:0.9rem;">
-          <button class="btn btn-block" onclick="applyEntryPass()">Apply for Entry Pass</button>
-          <div class="muted">
-            Entry pass will be generated only after your payment is approved and candidature is marked eligible.
+        <div class="profile-top">
+          <div class="avatar" id="avatar-box">
+            <!-- photo injected -->
+          </div>
+          <div>
+            <div class="profile-name" id="profile-name"></div>
+            <div class="profile-meta" id="profile-meta-1"></div>
+            <div class="profile-meta" id="profile-meta-2"></div>
           </div>
         </div>
+
+        <div class="profile-tags" id="profile-tags"></div>
+
+        <div class="section-heading">Announcements</div>
+        <div class="section-body">
+          Latest fest updates and important instructions will appear here.
+        </div>
+
+        <div id="ann-highlight-box" style="margin-top:8px;"></div>
+        <div class="ann-list" id="ann-list"></div>
       </section>
 
-      <!-- RIGHT: Announcements + events -->
+      <!-- Right: Events -->
       <section class="card">
-        <div class="card-title">Announcements</div>
-        <div class="card-sub">Latest updates from organizing team.</div>
-        <div id="ann-list" class="list"></div>
-
-        <div style="margin-top:1rem;">
-          <div class="card-title" style="font-size:0.95rem;">Events</div>
-          <div class="card-sub">Apply for events of your choice. You can apply for multiple events.</div>
-          <div id="event-list" class="list"></div>
+        <div class="card-header">
+          <div>
+            <div class="card-title">Events & Registrations</div>
+            <div class="small-text">Choose events, read details, and apply with required information.</div>
+          </div>
         </div>
-      </section>
 
+        <div id="events-status" class="small-text">Loading events…</div>
+        <div class="event-grid" id="event-grid"></div>
+      </section>
+    </main>
+  </section>
+
+  <!-- Modal for event details / apply -->
+  <div id="modal-backdrop" class="modal-backdrop">
+    <div class="modal">
+      <h3 id="modal-title"></h3>
+      <div class="modal-meta" id="modal-meta"></div>
+      <div class="modal-body" id="modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn-small" type="button" onclick="closeModal()">Close</button>
+        <button id="modal-apply-btn" class="btn-small primary" type="button" onclick="showApplyForm()">Apply</button>
+      </div>
     </div>
   </div>
 
+  <footer>
+    © <span id="year"></span> Department of Mathematics, Central University of Rajasthan · MATH‑EARTH Candidate
+  </footer>
+
   <script>
-    const BACKEND_URL = "https://script.google.com/macros/s/AKfycbwFhm7d1TP9_Z1B4vL__8DMf4RrNku0TLZi6d_1e1Md4fcOtXY9PWovhOjwO6vIdNZDMA/exec";
+    const BACKEND_URL = 'YOUR_APPS_SCRIPT_EXEC_URL_HERE';
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-    function statusPillText(id, text, ok) {
-      const el = document.getElementById(id);
-      el.textContent = text;
-      el.classList.remove('status-ok', 'status-bad');
-      if (ok === true) el.classList.add('status-ok');
-      if (ok === false) el.classList.add('status-bad');
-    }
+    let CURRENT_USER = null;
+    let EVENTS = [];
+    let CURRENT_EVENT = null;
 
-    async function apiPost(payload) {
-      const res = await fetch(BACKEND_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      return res.json();
-    }
+    // ---- login ----
+    async function doLogin(e) {
+      e.preventDefault();
+      const loginId = document.getElementById('login-id').value.trim();
+      const pwd     = document.getElementById('login-pwd').value.trim();
+      const statusEl = document.getElementById('login-status');
+      const btn      = document.getElementById('login-btn');
 
-    function renderAnnouncements(list) {
-      const box = document.getElementById('ann-list');
-      box.innerHTML = "";
-      if (!list || list.length === 0) {
-        box.innerHTML = '<div class="muted">No announcements yet.</div>';
-        return;
-      }
-      list.forEach(a => {
-        const div = document.createElement('div');
-        div.className = "item";
-        div.innerHTML =
-          '<div class="item-title">' + (a.title || '') + '</div>' +
-          '<div class="item-meta">' + (a.time ? new Date(a.time).toLocaleString() : '') + '</div>' +
-          '<div class="item-body">' + (a.body || '') + '</div>';
-        box.appendChild(div);
-      });
-    }
-
-    function renderEvents(list, regId) {
-      const box = document.getElementById('event-list');
-      box.innerHTML = "";
-      if (!list || list.length === 0) {
-        box.innerHTML = '<div class="muted">No events published yet.</div>';
-        return;
-      }
-      list.forEach(e => {
-        const div = document.createElement('div');
-        div.className = "item";
-        const id = e.id || '';
-        const name = e.name || '';
-        const desc = e.desc || '';
-
-        div.innerHTML =
-          '<div class="item-title">' + name + '</div>' +
-          '<div class="item-meta">Event ID: ' + id + '</div>' +
-          '<div class="item-body">' + desc + '</div>';
-
-        const btnRow = document.createElement('div');
-        btnRow.style.marginTop = "0.45rem";
-
-        const soloBtn = document.createElement('button');
-        soloBtn.className = "btn btn-small";
-        soloBtn.textContent = "Apply (Solo)";
-        soloBtn.onclick = () => applyEvent(id, name, "Solo", regId);
-
-        const teamBtn = document.createElement('button');
-        teamBtn.className = "btn btn-small btn-secondary";
-        teamBtn.style.marginLeft = "0.4rem";
-        teamBtn.textContent = "Apply (Team)";
-        teamBtn.onclick = () => {
-          const notes = prompt("Enter team details (team name / members):");
-          if (notes === null) return;
-          applyEvent(id, name, "Team", regId, notes);
-        };
-
-        btnRow.appendChild(soloBtn);
-        btnRow.appendChild(teamBtn);
-        div.appendChild(btnRow);
-
-        box.appendChild(div);
-      });
-    }
-
-    async function loadDashboard() {
-      const regId = localStorage.getItem('mathearth_regid');
-      if (!regId) {
-        document.getElementById('no-regid').style.display = "block";
-        document.getElementById('dashboard').style.display = "none";
-        document.getElementById('subtitle').textContent = "Not logged in.";
-        return;
-      }
+      statusEl.textContent = '';
+      btn.disabled = true;
 
       try {
-        document.getElementById('subtitle').textContent = "Loading your data...";
-        const data = await apiPost({ mode: "candidateDashboard", regId: regId });
-
-        if (!data.success) {
-          document.getElementById('subtitle').textContent = "Error loading profile.";
-          alert("Error: " + (data.error || "Candidate not found"));
+        const res = await fetch(BACKEND_URL, {
+          method:'POST',
+          body: JSON.stringify({ action:'login', loginId, password:pwd })
+        });
+        const json = await res.json();
+        if (!json || !json.success) {
+          statusEl.textContent = 'Invalid credentials or registration not approved.';
+          btn.disabled = false;
           return;
         }
 
-        const profile = data.profile || {};
-        const anns = data.announcements || [];
-        const events = data.events || [];
-
-        document.getElementById('dashboard').style.display = "grid";
-        document.getElementById('no-regid').style.display = "none";
-
-        document.getElementById('p-name').textContent = profile.name || '';
-        document.getElementById('p-regid').textContent = profile.regId || regId;
-        document.getElementById('p-dept').textContent = profile.dept || '';
-        document.getElementById('p-prog').textContent = profile.programme || '';
-        document.getElementById('p-sem').textContent = profile.semester || '';
-        document.getElementById('p-email').textContent = profile.personalEmail || '';
-
-        if (profile.photoUrl) {
-          document.getElementById('photo').src = profile.photoUrl;
-        }
-
-        statusPillText('pill-payment', 'Payment: ' + (profile.paymentStatus || 'Pending'),
-          profile.paymentStatus === 'Approved');
-        statusPillText('pill-cand', 'Candidature: ' + (profile.candStatus || 'Pending'),
-          profile.candStatus === 'Eligible');
-
-        renderAnnouncements(anns);
-        renderEvents(events, regId);
-
-        document.getElementById('subtitle').textContent = "Welcome, " + (profile.name || regId);
+        CURRENT_USER = json;
+        showDashboard();
       } catch (err) {
         console.error(err);
-        document.getElementById('subtitle').textContent = "Error loading data.";
-        alert("Network error: " + err.message);
+        statusEl.textContent = 'Error: ' + err.message;
+      } finally {
+        btn.disabled = false;
       }
     }
 
-    async function applyEvent(eventId, eventName, teamOrSolo, regId, notes) {
-      try {
-        const payload = {
-          mode: "applyEvent",
-          regId: regId,
-          eventId: eventId,
-          team: teamOrSolo,
-          notes: notes || ""
-        };
-        const res = await apiPost(payload);
-        if (!res.success) {
-          alert("Could not apply for event. Please try again.");
-          return;
-        }
-        alert("Application submitted for event: " + eventName);
-      } catch (err) {
-        console.error(err);
-        alert("Error applying for event: " + err.message);
+    function showDashboard() {
+      document.getElementById('login-section').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+
+      document.getElementById('user-name').textContent = CURRENT_USER.name || 'Candidate';
+      const chip = document.getElementById('chip-user');
+      chip.style.display = 'block';
+      chip.textContent = (CURRENT_USER.univEmail || CURRENT_USER.email || '').slice(0, 26);
+
+      // profile info
+      document.getElementById('profile-name').textContent = CURRENT_USER.name || '';
+      document.getElementById('profile-meta-1').textContent =
+        (CURRENT_USER.programme || '') + ' · Sem ' + (CURRENT_USER.semester || '');
+      document.getElementById('profile-meta-2').textContent =
+        (CURRENT_USER.dept || '') + ' · RegID: ' + (CURRENT_USER.regId || '');
+
+      const tagsEl = document.getElementById('profile-tags');
+      tagsEl.innerHTML = '';
+      if (CURRENT_USER.email) {
+        tagsEl.innerHTML += `<span class="tag">Personal: ${CURRENT_USER.email}</span>`;
       }
+      if (CURRENT_USER.univEmail) {
+        tagsEl.innerHTML += `<span class="tag">Univ: ${CURRENT_USER.univEmail}</span>`;
+      }
+      if (CURRENT_USER.contact) {
+        tagsEl.innerHTML += `<span class="tag">Phone: ${CURRENT_USER.contact}</span>`;
+      }
+      if (CURRENT_USER.whatsapp) {
+        tagsEl.innerHTML += `<span class="tag">WhatsApp: ${CURRENT_USER.whatsapp}</span>`;
+      }
+
+      const avatarBox = document.getElementById('avatar-box');
+      avatarBox.innerHTML = '';
+      if (CURRENT_USER.photoUrl) {
+        const img = document.createElement('img');
+        img.src = CURRENT_USER.photoUrl;
+        img.alt = 'Photo';
+        avatarBox.appendChild(img);
+      }
+
+      loadAnnouncements();
+      loadEvents();
     }
 
-    async function applyEntryPass() {
-      const regId = localStorage.getItem('mathearth_regid');
-      if (!regId) {
-        alert("Login information missing. Please login again.");
-        return;
-      }
-      if (!confirm("Apply for entry pass with RegID " + regId + "?")) return;
+    // ---- announcements ----
+    async function loadAnnouncements() {
+      const highlightBox = document.getElementById('ann-highlight-box');
+      const listEl = document.getElementById('ann-list');
+      highlightBox.innerHTML = '';
+      listEl.innerHTML = '<div class="small-text" style="padding-top:4px;">Loading…</div>';
 
       try {
-        const res = await apiPost({ mode: "applyEntryPass", regId: regId });
-        if (!res.success) {
-          alert("Could not submit entry pass request.");
+        const res = await fetch(BACKEND_URL, {
+          method:'POST',
+          body: JSON.stringify({ action:'listAnns' })
+        });
+        const anns = await res.json();
+        const list = Array.isArray(anns) ? anns : [];
+
+        // highlighted
+        const hi = list.find(a => a.highlighted);
+        if (hi) {
+          const d = hi.date ? new Date(hi.date) : null;
+          const ds = d ? d.toLocaleString() : '';
+          highlightBox.innerHTML = `
+            <div class="ann-highlight">
+              <div class="ann-highlight-title">${hi.title}</div>
+              <div>${hi.message}</div>
+              <div style="margin-top:3px;font-size:.72rem;opacity:.8;">Important · ${ds}</div>
+            </div>
+          `;
+        }
+
+        // others
+        listEl.innerHTML = '';
+        const others = list.filter(a => !a.highlighted);
+        if (!others.length && !hi) {
+          listEl.innerHTML = '<div class="small-text" style="padding-top:4px;">No announcements yet.</div>';
           return;
         }
-        alert("Entry pass request submitted.");
+
+        others.slice(0,8).forEach(a => {
+          const d = a.date ? new Date(a.date) : null;
+          const ds = d ? d.toLocaleString() : '';
+          const div = document.createElement('div');
+          div.className = 'ann-item';
+          div.innerHTML = `
+            <div class="ann-item-title">${a.title}</div>
+            <div>${a.message}</div>
+            <div class="ann-item-meta">${ds}</div>
+          `;
+          listEl.appendChild(div);
+        });
       } catch (err) {
         console.error(err);
-        alert("Error submitting entry pass request: " + err.message);
+        listEl.innerHTML = '<div class="small-text" style="padding-top:4px;color:#ffb4c4;">Error loading announcements.</div>';
       }
     }
 
-    // Load on page open
-    loadDashboard();
+    // ---- events ----
+    async function loadEvents() {
+      const statusEl = document.getElementById('events-status');
+      const grid = document.getElementById('event-grid');
+      statusEl.textContent = 'Loading events…';
+      grid.innerHTML = '';
+
+      try {
+        const res = await fetch(BACKEND_URL, {
+          method:'POST',
+          body: JSON.stringify({ action:'listEvents' })
+        });
+        const list = await res.json();
+        EVENTS = Array.isArray(list) ? list : [];
+
+        if (!EVENTS.length) {
+          statusEl.textContent = 'No events published yet. Please check later.';
+          return;
+        }
+
+        statusEl.textContent = '';
+        EVENTS.forEach(ev => {
+          const card = document.createElement('div');
+          card.className = 'event-card';
+          card.innerHTML = `
+            <div class="event-title">${ev.name}</div>
+            <div class="event-body">${(ev.details || '').slice(0,100)}${ev.details && ev.details.length>100 ? '…' : ''}</div>
+            <div class="event-actions">
+              <button class="btn-small" type="button" onclick="openEvent('${ev.id}', false)">View details</button>
+              <button class="btn-small primary" type="button" onclick="openEvent('${ev.id}', true)">Apply</button>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = 'Error loading events: ' + err.message;
+      }
+    }
+
+    function openEvent(eventId, goToApply) {
+      const ev = EVENTS.find(e => e.id === eventId);
+      if (!ev) return;
+      CURRENT_EVENT = ev;
+
+      const titleEl = document.getElementById('modal-title');
+      const metaEl  = document.getElementById('modal-meta');
+      const bodyEl  = document.getElementById('modal-body');
+      const applyBtn = document.getElementById('modal-apply-btn');
+
+      titleEl.textContent = ev.name;
+      metaEl.textContent = 'Event ID: ' + ev.id;
+      bodyEl.innerHTML = `<p style="margin-bottom:6px;">${ev.details || ''}</p>`;
+
+      // show custom fields info
+      const fields = Array.isArray(ev.fields) ? ev.fields : [];
+      if (fields.length) {
+        const list = document.createElement('ul');
+        list.style.marginTop = '4px';
+        list.style.paddingLeft = '18px';
+        list.style.fontSize = '0.78rem';
+        list.style.opacity = '0.9';
+        list.innerHTML = fields.map(f => `<li>${f}</li>`).join('');
+        bodyEl.appendChild(document.createElement('hr'));
+        bodyEl.appendChild(document.createElement('div')).textContent = 'This event asks for:';
+        bodyEl.appendChild(list);
+      }
+
+      document.getElementById('modal-backdrop').style.display = 'flex';
+
+      if (goToApply) {
+        showApplyForm();
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('modal-backdrop').style.display = 'none';
+      CURRENT_EVENT = null;
+    }
+
+    function showApplyForm() {
+      if (!CURRENT_EVENT) return;
+      const bodyEl = document.getElementById('modal-body');
+      const fields = Array.isArray(CURRENT_EVENT.fields) ? CURRENT_EVENT.fields : [];
+
+      let html = `<p style="margin-bottom:4px;">Fill the details to apply for <strong>${CURRENT_EVENT.name}</strong>.</p>`;
+      if (!fields.length) {
+        html += `<p style="font-size:.78rem;opacity:.8;">No extra details required. Click submit to confirm your participation.</p>`;
+      }
+
+      fields.forEach((f, idx) => {
+        const id = 'app-field-' + idx;
+        html += `
+          <div style="margin-top:6px;">
+            <label for="${id}" style="display:block;font-size:.76rem;margin-bottom:2px;">${f}</label>
+            <input id="${id}" style="width:100%;padding:8px 9px;border-radius:9px;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.6);color:#fff;font-size:.8rem;">
+          </div>
+        `;
+      });
+
+      html += `
+        <div style="margin-top:8px;text-align:right;">
+          <button class="btn-small primary" type="button" onclick="submitApplication()">Submit application</button>
+        </div>
+      `;
+
+      bodyEl.innerHTML = html;
+    }
+
+    async function submitApplication() {
+      if (!CURRENT_EVENT || !CURRENT_USER) return;
+      const fields = Array.isArray(CURRENT_EVENT.fields) ? CURRENT_EVENT.fields : [];
+      const appData = {};
+      fields.forEach((f, idx) => {
+        const id = 'app-field-' + idx;
+        const val = document.getElementById(id)?.value || '';
+        appData[f] = val;
+      });
+
+      try {
+        await fetch(BACKEND_URL, {
+          method:'POST',
+          body: JSON.stringify({
+            action: 'applyEvent',
+            regId: CURRENT_USER.regId,
+            eventId: CURRENT_EVENT.id,
+            appData
+          })
+        });
+        alert('Application submitted successfully!');
+        closeModal();
+      } catch (err) {
+        console.error(err);
+        alert('Error submitting application: ' + err.message);
+      }
+    }
   </script>
 </body>
 </html>
