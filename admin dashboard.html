@@ -2,512 +2,726 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MATH-EARTH Admin Dashboard</title>
+  <title>MATH-EARTH Admin Dashboard | CURAJ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+
     body {
-      font-family: 'Poppins', sans-serif;
-      background: #0f172a;
-      color: #e5e7eb;
-      min-height: 100vh;
-      padding: 1.5rem;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-    }
-    .title {
-      font-size: 1.6rem;
-      font-weight: 600;
-    }
-    .subtitle {
-      font-size: 0.9rem;
-      color: #9ca3af;
-    }
-    .back-link a {
-      color: #38bdf8;
-      text-decoration: none;
-      font-size: 0.9rem;
-    }
-    .back-link a:hover { text-decoration: underline; }
-
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      margin-bottom: 1rem;
-    }
-    button {
-      border: none;
-      border-radius: 999px;
-      padding: 0.5rem 1.1rem;
-      font-size: 0.85rem;
-      cursor: pointer;
-      font-weight: 500;
-    }
-    .btn-primary {
-      background: linear-gradient(45deg, #22c55e, #16a34a);
-      color: white;
-    }
-    .btn-secondary {
-      background: #111827;
-      color: #e5e7eb;
-      border: 1px solid #374151;
-    }
-    .btn-danger {
-      background: linear-gradient(45deg, #ef4444, #b91c1c);
-      color: white;
+      font-family:'Poppins',sans-serif;
+      min-height:100vh;
+      background: radial-gradient(circle at top left,#00A859 0,#003366 45%,#000814 100%);
+      color:#fff;
+      overflow-x:hidden;
+      display:flex;
+      flex-direction:column;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-      font-size: 0.8rem;
-    }
-    thead {
-      background: #111827;
-    }
-    th, td {
-      padding: 0.5rem 0.4rem;
-      border-bottom: 1px solid #1f2937;
-      text-align: left;
-      vertical-align: top;
-    }
-    th {
-      font-weight: 500;
-      color: #e5e7eb;
-      white-space: nowrap;
-    }
-    tr:nth-child(even) td {
-      background: #020617;
-    }
-    tr:hover td {
-      background: #0b1120;
+    header {
+      padding:16px 18px 8px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
     }
 
-    select, input[type="text"] {
-      background: #020617;
-      border: 1px solid #374151;
-      color: #e5e7eb;
-      border-radius: 0.375rem;
-      padding: 0.2rem 0.35rem;
-      font-size: 0.78rem;
+    .logo {
+      font-weight:700;
+      letter-spacing:2px;
+      font-size:1rem;
+      text-transform:uppercase;
     }
 
-    .status-pill {
-      display: inline-block;
-      padding: 0.15rem 0.5rem;
-      border-radius: 999px;
-      font-size: 0.7rem;
-      font-weight: 500;
+    .header-right {
+      display:flex;
+      align-items:center;
+      gap:10px;
     }
-    .status-pending {
-      background: rgba(234,179,8,0.15);
-      color: #facc15;
-    }
-    .status-approved {
-      background: rgba(22,163,74,0.18);
-      color: #4ade80;
-    }
-    .status-rejected {
-      background: rgba(248,113,113,0.15);
-      color: #f87171;
+
+    .chip {
+      font-size:0.75rem;
+      padding:5px 10px;
+      border-radius:999px;
+      background:rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.25);
     }
 
     .link {
-      color: #38bdf8;
-      text-decoration: none;
-      word-break: break-all;
-    }
-    .link:hover { text-decoration: underline; }
-
-    .small {
-      font-size: 0.75rem;
-      color: #9ca3af;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 0.08rem 0.45rem;
-      border-radius: 999px;
-      background: #111827;
-      border: 1px solid #1f2937;
-      font-size: 0.65rem;
-      color: #9ca3af;
-      margin-left: 0.35rem;
+      font-size:0.78rem;
+      color:#d7fbe8;
+      text-decoration:none;
+      border-radius:999px;
+      border:1px solid rgba(215,251,232,0.4);
+      padding:6px 12px;
+      transition:all .2s;
+      backdrop-filter:blur(10px);
     }
 
-    @media (max-width: 900px) {
-      table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
+    .link:hover {
+      background:rgba(215,251,232,0.18);
+      transform:translateY(-1px);
+    }
+
+    .title-bar {
+      padding:4px 18px 14px;
+    }
+
+    .title-main {
+      font-size:1.4rem;
+      font-weight:600;
+    }
+
+    .title-sub {
+      font-size:0.8rem;
+      opacity:0.8;
+      margin-top:3px;
+    }
+
+    .layout {
+      flex:1;
+      padding:0 14px 18px;
+      display:grid;
+      grid-template-columns:2.1fr 1.4fr;
+      gap:16px;
+    }
+
+    @media (max-width:900px) {
+      .layout {
+        grid-template-columns:1fr;
       }
+    }
+
+    .card {
+      background:rgba(0,0,0,0.45);
+      border-radius:20px;
+      padding:16px 14px 18px;
+      border:1px solid rgba(255,255,255,0.18);
+      box-shadow:0 18px 38px rgba(0,0,0,0.7);
+      backdrop-filter:blur(18px);
+      animation:slideIn .5s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { opacity:0; transform:translateY(30px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .card-header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:8px;
+      gap:8px;
+    }
+
+    .card-title {
+      font-size:1rem;
+      font-weight:600;
+    }
+
+    .small-text {
+      font-size:0.75rem;
+      opacity:0.8;
+    }
+
+    .filter-row {
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      margin-bottom:8px;
+    }
+
+    select, input[type="search"] {
+      padding:7px 9px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.25);
+      background:rgba(0,0,0,0.4);
+      color:#fff;
+      font-size:0.8rem;
+      outline:none;
+      min-width:120px;
+    }
+
+    select:focus, input[type="search"]:focus {
+      border-color:#00A859;
+      box-shadow:0 0 0 2px rgba(0,168,89,0.35);
+    }
+
+    table {
+      width:100%;
+      border-collapse:collapse;
+      font-size:0.78rem;
+      margin-top:6px;
+    }
+
+    th, td {
+      padding:7px 6px;
+      text-align:left;
+      border-bottom:1px solid rgba(255,255,255,0.12);
+    }
+
+    th {
+      font-weight:500;
+      font-size:0.75rem;
+      opacity:0.9;
+    }
+
+    tbody tr:hover {
+      background:rgba(255,255,255,0.03);
+    }
+
+    .badge-status {
+      font-size:0.7rem;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.3);
+      text-transform:capitalize;
+    }
+
+    .badge-ok { border-color:#00E676; color:#b9ffcc; }
+    .badge-pending { border-color:#FFD54F; color:#ffe082; }
+    .badge-bad { border-color:#FF5252; color:#ffb4b4; }
+
+    .btn {
+      padding:5px 9px;
+      border-radius:999px;
+      border:none;
+      cursor:pointer;
+      font-size:0.72rem;
+      font-weight:500;
+      margin:1px 2px;
+      transition:all .18s;
+    }
+
+    .btn-approve {
+      background:#00C853;
+      color:#fff;
+      box-shadow:0 8px 16px rgba(0,200,83,0.4);
+    }
+
+    .btn-reject {
+      background:#FF5252;
+      color:#fff;
+      box-shadow:0 8px 16px rgba(255,82,82,0.4);
+    }
+
+    .btn-outline {
+      background:transparent;
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.4);
+    }
+
+    .btn:hover {
+      transform:translateY(-1px);
+      box-shadow:0 10px 20px rgba(0,0,0,0.4);
+    }
+
+    .status-strip {
+      margin-top:6px;
+      font-size:0.78rem;
+      opacity:0.9;
+    }
+
+    .status-strip span {
+      opacity:0.8;
+    }
+
+    .ann-form input,
+    .ann-form textarea {
+      width:100%;
+      padding:8px 9px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.25);
+      background:rgba(0,0,0,0.5);
+      color:#fff;
+      font-size:0.8rem;
+      outline:none;
+      margin-bottom:6px;
+    }
+
+    .ann-form textarea {
+      min-height:70px;
+      resize:vertical;
+    }
+
+    .ann-form label {
+      font-size:0.78rem;
+      margin-bottom:3px;
+      display:block;
+      opacity:0.9;
+    }
+
+    .ann-form .row {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:6px;
+    }
+
+    .ann-form .row-left {
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .ann-form small {
+      font-size:0.72rem;
+      opacity:0.8;
+    }
+
+    .highlight-toggle {
+      width:16px;
+      height:16px;
+    }
+
+    .ann-list {
+      margin-top:10px;
+      max-height:260px;
+      overflow-y:auto;
+      padding-right:4px;
+    }
+
+    .ann-item {
+      padding:9px 10px;
+      border-radius:14px;
+      margin-bottom:8px;
+      background:rgba(255,255,255,0.06);
+      border-left:4px solid rgba(255,255,255,0.25);
+      font-size:0.78rem;
+      animation:fadeIn .4s ease-out;
+    }
+
+    .ann-item.highlighted {
+      background:linear-gradient(135deg,rgba(255,255,141,0.2),rgba(255,193,7,0.28));
+      border-left-color:#FFEB3B;
+      color:#111;
+    }
+
+    .ann-title {
+      font-weight:600;
+      margin-bottom:3px;
+    }
+
+    .ann-meta {
+      font-size:0.7rem;
+      opacity:0.8;
+      margin-top:2px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(8px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .modal-backdrop {
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.82);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:999;
+    }
+
+    .modal {
+      background:#020712;
+      color:#fff;
+      border-radius:18px;
+      padding:18px 16px 16px;
+      max-width:420px;
+      width:90%;
+      border:1px solid rgba(255,255,255,0.18);
+      box-shadow:0 20px 45px rgba(0,0,0,0.8);
+      animation:slideIn .35s ease-out;
+      font-size:0.8rem;
+    }
+
+    .modal h3 {
+      font-size:1rem;
+      margin-bottom:6px;
+    }
+
+    .modal .meta-row {
+      font-size:0.72rem;
+      opacity:0.8;
+      margin-bottom:8px;
+    }
+
+    .modal .detail-line {
+      margin-bottom:4px;
+    }
+
+    .modal-footer {
+      display:flex;
+      justify-content:flex-end;
+      gap:6px;
+      margin-top:10px;
+    }
+
+    footer {
+      text-align:center;
+      padding:8px 8px 14px;
+      font-size:0.7rem;
+      opacity:0.72;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <div>
-        <div class="title">MATH-EARTH Admin Dashboard</div>
-        <div class="subtitle">Review registrations, update status, and send login details</div>
-      </div>
-      <div class="back-link">
-        <a href="index.html">&larr; Back to Home</a>
-      </div>
+  <header>
+    <div class="logo">MATH‑EARTH · Admin</div>
+    <div class="header-right">
+      <div class="chip" id="admin-email-chip">Signed in as: <span id="admin-email">Loading…</span></div>
+      <a href="index.html" class="link">← Main site</a>
     </div>
+  </header>
 
-    <div class="controls">
-      <button class="btn-primary" onclick="loadRegistrations()">Reload Registrations</button>
-      <button class="btn-secondary" onclick="loadAnnouncements()">Announcements</button>
-      <button class="btn-secondary" onclick="loadEvents()">Events</button>
-      <button class="btn-secondary" onclick="loadEventApplications()">Event Applications</button>
+  <section class="title-bar">
+    <div class="title-main">Admin Dashboard</div>
+    <div class="title-sub">
+      Approve registrations, manage announcements, and control fest information.
     </div>
+  </section>
 
-    <div class="small" id="statusLine">Status: Idle</div>
+  <main class="layout">
+    <!-- Left: Registrations -->
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Registrations & Approvals</div>
+          <div class="small-text">Filter by department and approve after verifying payment & candidature.</div>
+        </div>
+      </div>
 
-    <div id="tableContainer">
-      <!-- tables will be injected here -->
+      <div class="filter-row">
+        <div>
+          <select id="filterDept" onchange="loadRegistrations()">
+            <option value="">All departments</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div>
+          <input type="search" id="searchName" placeholder="Search by name / RegID" oninput="renderRegistrations()" />
+        </div>
+      </div>
+
+      <div style="overflow-x:auto; max-height:340px; overflow-y:auto;">
+        <table id="reg-table">
+          <thead>
+            <tr>
+              <th>RegID</th>
+              <th>Name</th>
+              <th>Dept</th>
+              <th>Payment</th>
+              <th>Candidature</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="reg-tbody">
+          </tbody>
+        </table>
+      </div>
+
+      <div class="status-strip">
+        <span id="reg-status">Loading registrations…</span>
+      </div>
+    </section>
+
+    <!-- Right: Announcements -->
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Announcements</div>
+          <div class="small-text">Post updates for all registered candidates. Highlight the most important one.</div>
+        </div>
+      </div>
+
+      <div class="ann-form">
+        <label for="ann-title">Title</label>
+        <input id="ann-title" placeholder="e.g. Inaugural ceremony timing updated">
+
+        <label for="ann-body">Message</label>
+        <textarea id="ann-body" placeholder="Type the detailed announcement here…"></textarea>
+
+        <div class="row">
+          <div class="row-left">
+            <input id="ann-highlight" type="checkbox" class="highlight-toggle">
+            <small>Mark as highlighted announcement</small>
+          </div>
+          <button class="btn btn-main" type="button" onclick="publishAnnouncement()" style="padding:7px 13px;font-size:0.78rem;">
+            Publish
+          </button>
+        </div>
+      </div>
+
+      <div class="ann-list" id="ann-list">
+        <!-- announcements will be injected here -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal for registration details -->
+  <div class="modal-backdrop" id="modal-backdrop">
+    <div class="modal">
+      <h3>Registration Details</h3>
+      <div class="meta-row" id="modal-meta"></div>
+      <div id="modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" type="button" onclick="closeModal()">Close</button>
+      </div>
     </div>
   </div>
 
+  <footer>
+    © <span id="year"></span> Department of Mathematics, Central University of Rajasthan · MATH‑EARTH Admin
+  </footer>
+
   <script>
-    // Apps Script backend URL (same as index/register)
-    const BACKEND_URL = "https://script.google.com/macros/s/AKfycbwFhm7d1TP9_Z1B4vL__8DMf4RrNku0TLZi6d_1e1Md4fcOtXY9PWovhOjwO6vIdNZDMA/exec";
+    const BACKEND_URL = 'YOUR_APPS_SCRIPT_EXEC_URL_HERE'; // /exec URL
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-    function setStatus(msg) {
-      document.getElementById('statusLine').textContent = "Status: " + msg;
-    }
+    let ADMIN_EMAIL = '';
+    let REG_LIST = [];
+    let ANN_LIST = [];
+    let REG_INDEX = {}; // regId → full object for modal
 
-    async function apiPost(payload) {
-      const res = await fetch(BACKEND_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      return res.json();
-    }
+    // ---- init ----
+    window.addEventListener('DOMContentLoaded', () => {
+      // If you have a backend action getAdminEmail, call it; else set ADMIN_EMAIL manually
+      tryGetAdminEmail();
+      loadRegistrations();
+      loadAnnouncements();
+    });
 
-    function paymentStatusPill(status) {
-      if (status === 'Approved') return '<span class="status-pill status-approved">Approved</span>';
-      if (status === 'Rejected') return '<span class="status-pill status-rejected">Rejected</span>';
-      return '<span class="status-pill status-pending">' + (status || 'Pending') + '</span>';
-    }
-
-    function candStatusPill(status) {
-      if (status === 'Eligible') return '<span class="status-pill status-approved">Eligible</span>';
-      if (status === 'Not Eligible') return '<span class="status-pill status-rejected">Not Eligible</span>';
-      return '<span class="status-pill status-pending">' + (status || 'Pending') + '</span>';
-    }
-
-    async function loadRegistrations() {
+    async function tryGetAdminEmail() {
+      const chipSpan = document.getElementById('admin-email');
       try {
-        setStatus("Loading registrations...");
-        const data = await apiPost({ mode: 'listRegistrations' });
-
-        if (!data.success) {
-          alert("Failed to load registrations");
-          setStatus("Error loading registrations");
-          return;
-        }
-
-        const regs = data.registrations || [];
-        setStatus("Loaded " + regs.length + " registrations");
-
-        let html = '';
-        html += '<table>';
-        html += '<thead><tr>'
-          + '<th>#</th>'
-          + '<th>Name / Dept</th>'
-          + '<th>Programme / Sem</th>'
-          + '<th>Emails</th>'
-          + '<th>Contacts</th>'
-          + '<th>Docs</th>'
-          + '<th>Payment Status</th>'
-          + '<th>Candidature</th>'
-          + '<th>RegID / Password</th>'
-          + '<th>Actions</th>'
-          + '</tr></thead><tbody>';
-
-        regs.forEach((r, i) => {
-          html += '<tr>';
-          html += '<td>' + (i + 1) + '</td>';
-
-          html += '<td><div>' + (r.name || '') + '</div>'
-                + '<div class="small">' + (r.dept || '') + '</div></td>';
-
-          html += '<td><div>' + (r.programme || '') + '</div>'
-                + '<div class="small">Sem: ' + (r.semester || '') + '</div></td>';
-
-          html += '<td><div class="small">Personal: ' + (r.personalEmail || '') + '</div>'
-                + '<div class="small">Univ: ' + (r.univEmail || '') + '</div></td>';
-
-          html += '<td><div class="small">Contact: ' + (r.contact || '') + '</div>'
-                + '<div class="small">WhatsApp: ' + (r.whatsapp || '') + '</div></td>';
-
-          html += '<td>';
-          if (r.idCardUrl) html += '<div><a class="link" href="' + r.idCardUrl + '" target="_blank">ID Card</a></div>';
-          if (r.paymentUrl) html += '<div><a class="link" href="' + r.paymentUrl + '" target="_blank">Payment</a></div>';
-          if (r.photoUrl) html += '<div><a class="link" href="' + r.photoUrl + '" target="_blank">Photo</a></div>';
-          html += '</td>';
-
-          html += '<td>' + paymentStatusPill(r.paymentStatus) + '</td>';
-          html += '<td>' + candStatusPill(r.candStatus) + '</td>';
-
-          html += '<td><div class="small">RegID: ' + (r.regId || '') + '</div>'
-                + '<div class="small">Pass: ' + (r.password || '') + '</div></td>';
-
-          html += '<td>'
-                + '<select data-regid="' + (r.regId || '') + '" onchange="updateStatus(this)">'
-                + '<option value="">Set Status</option>'
-                + '<option value="Approved|Eligible">Approve &amp; Eligible</option>'
-                + '<option value="Approved|Not Eligible">Approve / Not Eligible</option>'
-                + '<option value="Rejected|Not Eligible">Reject</option>'
-                + '</select>'
-                + '<br>'
-                + '<button class="btn-secondary" style="margin-top:0.3rem" onclick="sendLogin(\'' + (r.regId || '') + '\')">Send Login Mail</button>'
-                + '</td>';
-
-          html += '</tr>';
+        const res = await fetch(BACKEND_URL, {
+          method:'POST',
+          body: JSON.stringify({ action:'getAdminEmail' })
         });
+        const json = await res.json();
+        if (json && json.email) {
+          ADMIN_EMAIL = json.email;
+        } else {
+          ADMIN_EMAIL = 'admin@curaj.ac.in'; // fallback
+        }
+      } catch(e) {
+        ADMIN_EMAIL = 'admin@curaj.ac.in';
+      }
+      chipSpan.textContent = ADMIN_EMAIL;
+    }
 
-        html += '</tbody></table>';
-        document.getElementById('tableContainer').innerHTML = html;
-      } catch (err) {
+    // ---- registrations ----
+    async function loadRegistrations() {
+      const statusEl = document.getElementById('reg-status');
+      statusEl.textContent = 'Loading registrations…';
+      try {
+        const filterDept = document.getElementById('filterDept').value;
+        const res = await fetch(BACKEND_URL, {
+          method:'POST',
+          body: JSON.stringify({ action:'listRegs', filter: filterDept })
+        });
+        const list = await res.json();
+        REG_LIST = Array.isArray(list) ? list : [];
+        REG_INDEX = {};
+        REG_LIST.forEach(r => { REG_INDEX[r.regId] = r; });
+        renderRegistrations();
+        statusEl.textContent = 'Loaded ' + REG_LIST.length + ' registrations.';
+      } catch(err) {
         console.error(err);
-        alert("Error loading registrations: " + err.message);
-        setStatus("Error loading registrations");
+        statusEl.textContent = 'Error loading registrations: ' + err.message;
       }
     }
 
-    async function updateStatus(sel) {
-      const value = sel.value;
-      if (!value) return;
-      const regId = sel.getAttribute('data-regid');
-      if (!regId) return;
+    function renderRegistrations() {
+      const tbody = document.getElementById('reg-tbody');
+      const searchVal = document.getElementById('searchName').value.trim().toLowerCase();
+      tbody.innerHTML = '';
 
-      const [payStatus, candStatus] = value.split('|');
+      const filtered = REG_LIST.filter(r => {
+        if (!searchVal) return true;
+        return (
+          (r.name || '').toLowerCase().includes(searchVal) ||
+          (r.regId || '').toLowerCase().includes(searchVal)
+        );
+      });
 
-      if (!confirm('Update status for RegID ' + regId + ' ?')) {
-        sel.value = '';
+      filtered.forEach(r => {
+        const tr = document.createElement('tr');
+
+        const badgePay = statusBadge(r.paymentStatus || r.payment || 'pending');
+        const badgeCand = statusBadge(r.candidatureStatus || r.cand || 'pending');
+
+        tr.innerHTML = `
+          <td><button class="btn btn-outline" type="button" onclick="openModal('${r.regId}')">${r.regId || ''}</button></td>
+          <td>${r.name || ''}</td>
+          <td>${r.dept || ''}</td>
+          <td>${badgePay}</td>
+          <td>${badgeCand}</td>
+          <td>
+            <button class="btn btn-approve" type="button" onclick="quickApprove('${r.regId}')">Approve</button>
+            <button class="btn btn-reject" type="button" onclick="rejectPayment('${r.regId}')">Reject</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      if (!filtered.length) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td colspan="6" style="text-align:center;opacity:.8;">No registrations match this filter.</td>`;
+        tbody.appendChild(tr);
+      }
+    }
+
+    function statusBadge(status) {
+      const s = (status || '').toLowerCase();
+      if (s === 'approved' || s === 'eligible') {
+        return `<span class="badge-status badge-ok">${s}</span>`;
+      } else if (s === 'rejected' || s === 'noteligible') {
+        return `<span class="badge-status badge-bad">${s}</span>`;
+      } else {
+        return `<span class="badge-status badge-pending">pending</span>`;
+      }
+    }
+
+    async function quickApprove(regId) {
+      if (!confirm('Approve payment & mark candidature eligible for ' + regId + '?')) return;
+      await sendApprove(regId, 'approved', 'eligible');
+    }
+
+    async function rejectPayment(regId) {
+      if (!confirm('Mark payment rejected for ' + regId + '?')) return;
+      await sendApprove(regId, 'rejected', 'pending');
+    }
+
+    async function sendApprove(regId, paymentStatus, candidatureStatus) {
+      const statusEl = document.getElementById('reg-status');
+      statusEl.textContent = 'Updating status for ' + regId + '…';
+      try {
+        const payload = {
+          action: 'approve',
+          regId,
+          paymentStatus,
+          candidatureStatus,
+          adminEmail: ADMIN_EMAIL
+        };
+        await fetch(BACKEND_URL, {
+          method:'POST',
+          body: JSON.stringify(payload)
+        });
+        statusEl.textContent = 'Updated ' + regId + '. Refreshing…';
+        await loadRegistrations();
+      } catch(err) {
+        console.error(err);
+        statusEl.textContent = 'Error updating: ' + err.message;
+      }
+    }
+
+    // ---- modal / details ----
+    function openModal(regId) {
+      const data = REG_INDEX[regId];
+      if (!data) return;
+      const metaEl = document.getElementById('modal-meta');
+      const bodyEl = document.getElementById('modal-body');
+
+      metaEl.textContent = regId + ' · ' + (data.dept || '') + ' · ' + (data.programme || '') + ' · Sem ' + (data.semester || '');
+
+      let html = '';
+      html += `<div class="detail-line"><strong>Name:</strong> ${data.name || ''}</div>`;
+      html += `<div class="detail-line"><strong>Personal Email:</strong> ${data.email || ''}</div>`;
+      html += `<div class="detail-line"><strong>University Email:</strong> ${data.univEmail || ''}</div>`;
+      html += `<div class="detail-line"><strong>Contact:</strong> ${data.contact || ''} | <strong>WhatsApp:</strong> ${data.whatsapp || ''}</div>`;
+      if (data.otherDept) {
+        html += `<div class="detail-line"><strong>Other Dept:</strong> ${data.otherDept}</div>`;
+      }
+      if (data.idCardUrl) {
+        html += `<div class="detail-line"><strong>ID Card:</strong> <a href="${data.idCardUrl}" target="_blank" style="color:#80d8ff;">View</a></div>`;
+      }
+      if (data.paymentUrl) {
+        html += `<div class="detail-line"><strong>Payment Proof:</strong> <a href="${data.paymentUrl}" target="_blank" style="color:#80d8ff;">View</a></div>`;
+      }
+      if (data.photoUrl) {
+        html += `<div class="detail-line"><strong>Photo:</strong><br><img src="${data.photoUrl}" alt="photo" style="max-width:120px;border-radius:14px;margin-top:4px;border:1px solid rgba(255,255,255,.5);"></div>`;
+      }
+
+      bodyEl.innerHTML = html;
+      document.getElementById('modal-backdrop').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('modal-backdrop').style.display = 'none';
+    }
+
+    // ---- announcements ----
+    async function publishAnnouncement() {
+      const title = document.getElementById('ann-title').value.trim();
+      const body  = document.getElementById('ann-body').value.trim();
+      const highlight = document.getElementById('ann-highlight').checked;
+
+      if (!title || !body) {
+        alert('Please enter both title and message.');
         return;
       }
 
       try {
-        setStatus("Updating status for " + regId + "...");
-        const res = await apiPost({
-          mode: 'updateStatus',
-          regId: regId,
-          paymentStatus: payStatus,
-          candStatus: candStatus
+        await fetch(BACKEND_URL, {
+          method:'POST',
+          body: JSON.stringify({
+            action:'addAnn',
+            title,
+            message: body,
+            isHighlighted: highlight
+          })
         });
-
-        if (!res.success) {
-          alert("Failed to update status");
-          setStatus("Status update failed");
-          return;
-        }
-        setStatus("Status updated for " + regId);
-        loadRegistrations();
-      } catch (err) {
+        document.getElementById('ann-title').value = '';
+        document.getElementById('ann-body').value = '';
+        document.getElementById('ann-highlight').checked = false;
+        loadAnnouncements();
+      } catch(err) {
         console.error(err);
-        alert("Error updating status: " + err.message);
-        setStatus("Status update error");
-      }
-    }
-
-    async function sendLogin(regId) {
-      if (!regId) return;
-      if (!confirm('Send login mail for RegID ' + regId + ' ?')) return;
-
-      try {
-        setStatus("Sending login mail for " + regId + "...");
-        const res = await apiPost({ mode: 'sendLoginMail', regId: regId });
-        if (!res.success) {
-          alert("Failed to send login mail");
-          setStatus("Login mail failed");
-          return;
-        }
-        alert("Login mail sent (if email present in sheet).");
-        setStatus("Login mail sent for " + regId);
-      } catch (err) {
-        console.error(err);
-        alert("Error sending login mail: " + err.message);
-        setStatus("Login mail error");
+        alert('Error publishing: ' + err.message);
       }
     }
 
     async function loadAnnouncements() {
+      const listEl = document.getElementById('ann-list');
+      listEl.innerHTML = '<div class="small-text" style="padding-top:4px;">Loading announcements…</div>';
       try {
-        setStatus("Loading announcements...");
-        const data = await apiPost({ mode: 'listAnnouncements' });
-        if (!data.success) {
-          alert("Failed to load announcements");
-          setStatus("Error loading announcements");
-          return;
-        }
-        const anns = data.announcements || [];
-
-        let html = '<h3 style="margin-top:1rem;margin-bottom:0.5rem;">Announcements</h3>';
-        html += '<button class="btn-primary" onclick="openAnnouncementPrompt()">Create Announcement</button>';
-
-        html += '<table><thead><tr><th>Time</th><th>Title</th><th>Body</th></tr></thead><tbody>';
-        anns.forEach(a => {
-          html += '<tr>'
-                + '<td class="small">' + new Date(a.time).toLocaleString() + '</td>'
-                + '<td>' + (a.title || '') + '</td>'
-                + '<td class="small">' + (a.body || '') + '</td>'
-                + '</tr>';
+        const res = await fetch(BACKEND_URL, {
+          method:'POST',
+          body: JSON.stringify({ action:'listAnns' })
         });
-        html += '</tbody></table>';
+        const anns = await res.json();
+        ANN_LIST = Array.isArray(anns) ? anns : [];
 
-        document.getElementById('tableContainer').innerHTML = html;
-        setStatus("Announcements loaded: " + anns.length);
-      } catch (err) {
-        console.error(err);
-        alert("Error loading announcements: " + err.message);
-        setStatus("Announcements error");
-      }
-    }
-
-    function openAnnouncementPrompt() {
-      const title = prompt("Announcement title:");
-      if (!title) return;
-      const body = prompt("Announcement body:");
-      if (!body) return;
-      createAnnouncement(title, body);
-    }
-
-    async function createAnnouncement(title, body) {
-      try {
-        setStatus("Creating announcement...");
-        const res = await apiPost({ mode: 'createAnnouncement', title: title, body: body });
-        if (!res.success) {
-          alert("Failed to create announcement");
-          setStatus("Announcement create failed");
+        listEl.innerHTML = '';
+        if (!ANN_LIST.length) {
+          listEl.innerHTML = '<div class="small-text" style="padding-top:4px;">No announcements yet.</div>';
           return;
         }
-        alert("Announcement created.");
-        loadAnnouncements();
-      } catch (err) {
-        console.error(err);
-        alert("Error creating announcement: " + err.message);
-        setStatus("Announcement create error");
-      }
-    }
 
-    async function loadEvents() {
-      try {
-        setStatus("Loading events...");
-        const data = await apiPost({ mode: 'listEvents' });
-        if (!data.success) {
-          alert("Failed to load events");
-          setStatus("Events load failed");
-          return;
-        }
-        const evs = data.events || [];
+        ANN_LIST.forEach(a => {
+          const div = document.createElement('div');
+          div.className = 'ann-item' + (a.highlighted ? ' highlighted' : '');
+          const d = a.date ? new Date(a.date) : null;
+          const dateStr = d ? d.toLocaleString() : '';
 
-        let html = '<h3 style="margin-top:1rem;margin-bottom:0.5rem;">Events</h3>';
-        html += '<button class="btn-primary" onclick="openEventPrompt()">Create Event</button>';
-
-        html += '<table><thead><tr><th>ID</th><th>Name</th><th>Description</th></tr></thead><tbody>';
-        evs.forEach(e => {
-          html += '<tr>'
-                + '<td><span class="badge">' + (e.id || '') + '</span></td>'
-                + '<td>' + (e.name || '') + '</td>'
-                + '<td class="small">' + (e.desc || '') + '</td>'
-                + '</tr>';
+          div.innerHTML = `
+            <div class="ann-title">${a.title}</div>
+            <div>${a.message}</div>
+            <div class="ann-meta">${a.highlighted ? 'Highlighted · ' : ''}${dateStr}</div>
+          `;
+          listEl.appendChild(div);
         });
-        html += '</tbody></table>';
-
-        document.getElementById('tableContainer').innerHTML = html;
-        setStatus("Events loaded: " + evs.length);
-      } catch (err) {
+      } catch(err) {
         console.error(err);
-        alert("Error loading events: " + err.message);
-        setStatus("Events error");
+        listEl.innerHTML = '<div class="small-text" style="padding-top:4px;color:#ffb4c4;">Error loading announcements.</div>';
       }
     }
-
-    function openEventPrompt() {
-      const name = prompt("Event name:");
-      if (!name) return;
-      const desc = prompt("Event description:");
-      if (desc === null) return;
-      createEvent(name, desc);
-    }
-
-    async function createEvent(name, desc) {
-      try {
-        setStatus("Creating event...");
-        const res = await apiPost({ mode: 'createEvent', name: name, desc: desc });
-        if (!res.success) {
-          alert("Failed to create event");
-          setStatus("Event create failed");
-          return;
-        }
-        alert("Event created with ID: " + res.id);
-        loadEvents();
-      } catch (err) {
-        console.error(err);
-        alert("Error creating event: " + err.message);
-        setStatus("Event create error");
-      }
-    }
-
-    async function loadEventApplications() {
-      try {
-        setStatus("Loading event applications...");
-        const data = await apiPost({ mode: 'listEventApplications' });
-        if (!data.success) {
-          alert("Failed to load applications");
-          setStatus("Applications load failed");
-          return;
-        }
-        const apps = data.applications || [];
-
-        let html = '<h3 style="margin-top:1rem;margin-bottom:0.5rem;">Event Applications</h3>';
-        html += '<table><thead><tr>'
-              + '<th>Time</th><th>RegID</th><th>Event</th>'
-              + '<th>Team/Solo</th><th>Notes</th>'
-              + '<th>Status</th><th>Name</th><th>Email</th>'
-              + '</tr></thead><tbody>';
-
-        apps.forEach(a => {
-          html += '<tr>'
-                + '<td class="small">' + new Date(a.timestamp).toLocaleString() + '</td>'
-                + '<td>' + (a.regId || '') + '</td>'
-                + '<td>' + (a.eventName || a.eventId || '') + '</td>'
-                + '<td class="small">' + (a.team || '') + '</td>'
-                + '<td class="small">' + (a.notes || '') + '</td>'
-                + '<td class="small">' + (a.status || '') + '</td>'
-                + '<td>' + (a.name || '') + '</td>'
-                + '<td class="small">' + (a.email || '') + '</td>'
-                + '</tr>';
-        });
-        html += '</tbody></table>';
-
-        document.getElementById('tableContainer').innerHTML = html;
-        setStatus("Applications loaded: " + apps.length);
-      } catch (err) {
-        console.error(err);
-        alert("Error loading applications: " + err.message);
-        setStatus("Applications error");
-      }
-    }
-
-    // Auto-load registrations on page open
-    loadRegistrations();
   </script>
 </body>
 </html>
