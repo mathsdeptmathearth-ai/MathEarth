@@ -402,11 +402,12 @@
           return;
         }
 
-        const res = await fetch(BACKEND_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)   // default registration handler
-        });
+       const res = await fetch(BACKEND_URL, {
+         method: "POST",
+         // CORS ke liye headers simple rakho
+         // headers: { "Content-Type": "application/json" },  // <-- ye hatao
+         body: JSON.stringify(payload)
+       });
 
         const json = await res.json();
 
